@@ -20,7 +20,7 @@ module.exports = {
    * clear
    * @return {{}}
    */
-  clear: immutableMgr.clear({}),
+  clear: () =>immutableMgr.clear({}),
 
   /**
    * @param {object} state
