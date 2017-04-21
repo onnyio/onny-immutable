@@ -2,7 +2,7 @@
   "name": "onny-immutable",
   "version": "0.0.1",
   "description": "Onny utils for immutability",
-  "main": "index.js",
+  "main": "./dist/index.js",
   "scripts": {
     "build": "babel src --presets babel-preset-es2015 --out-dir dist",
     "prepublish": "npm run build",
