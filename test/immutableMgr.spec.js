@@ -12,7 +12,7 @@
 
 
 import chai, { expect } from 'chai';
-import immutableMgr from '../src/immutableMgr';
+import immutableMgr from '../src/index';
 import { emptyState } from '../src/mutations';
 import { isEqual, cloneDeep } from 'onny-utils';
 
