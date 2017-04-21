@@ -2,7 +2,6 @@
 
 # Onnly specific
 dist
-.nyc_output
 
 .idea/**
 

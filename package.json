@@ -14,18 +14,18 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/imarotte/onny-immutable.git"
+    "url": "git+https://github.com/onnyio/onny-immutable.git"
   },
   "keywords": [
     "onny",
     "immutable"
   ],
-  "author": "Isaac Marotte <imarotte@gmail.com>",
+  "author": "Isaac Marotte <isaac@onny.io>",
   "license": "GPL-3.0",
   "bugs": {
-    "url": "https://github.com/imarotte/onny-immutable/issues"
+    "url": "https://github.com/onnyio/onny-immutable/issues"
   },
-  "homepage": "https://github.com/imarotte/onny-immutable#readme",
+  "homepage": "https://github.com/onnyio/onny-immutable#readme",
   "dependencies": {
     "immutability-helper": "^2.1.2",
     "onny-utils": "^1.0.1"
