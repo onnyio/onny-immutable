@@ -11,10 +11,10 @@
  */
 
 
-const immutableMgr = require('./immutableMgr');
+import immutableMgr from './immutableMgr';
 
 
-module.exports = {
+export default {
 
   /**
    * clear
@@ -63,7 +63,7 @@ module.exports = {
    * @param {function} func - the value to set it to
    * @return {object} - new object with the value in place
    */
-  update: (state, loc, func) => immutableMgr.set(state, loc, func),
+  update: (state, loc, func) => immutableMgr.update(state, loc, func),
   /**
    * update into a nested object
    *
