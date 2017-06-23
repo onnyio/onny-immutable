@@ -20,6 +20,7 @@ import {
   update,
   updateIn,
   remove,
+  removeIn,
   merge,
   mergeDeep,
   mergeIn,
@@ -97,6 +98,15 @@ module.exports = {
    * @return {object} - new object without the loc
    */
   remove: (state, loc) => remove(state, loc),
+
+  /**
+   * delete
+   *
+   * @param {object} state - source state
+   * @param {string[]} locArray - array leading to desired location
+   * @return {object} - new object without the loc
+   */
+  removeIn: (state, locArray) => removeIn(state, locArray),
 
   /**
    * @param {object} state - source state

@@ -3,6 +3,7 @@
 # OnnyUtils
 src
 test
+.babelrc
 
 .idea/**
 
