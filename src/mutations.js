@@ -22,6 +22,7 @@ import {
   isEmpty,
   isEqual
 } from 'onny-utils';
+import { isNull} from 'onny-validate';
 import immutableCommands from './immutableCommands';
 
 
@@ -119,6 +120,9 @@ const doesLocExist = (state, locArray) => getInCopy(state, locArray) !== null //
 // immutableMgr
 /////////////////////////////
 
+/**
+ * @class OnnyImmutable.Mutations
+ */
 export default class Mutations {
   constructor(state = {}) {
     // make a copy so we don't mess up the original
@@ -312,7 +316,14 @@ export default class Mutations {
     // assign us to the newly created pointer
     this.state = objPointer;
 
+    let next;
+
     for (let i = 0; i < locArray.length; i += 1) {
+      // if the next step in array doesn't exist, bail now
+      if(isNull(objPointer[locArray[i]])){
+        return this;
+      }
+
       if (i <= (locArray.length - 2)) {
         objPointer[locArray[i]] = omit(objPointer[locArray[i]], locArray[i + 1]);
         return this;

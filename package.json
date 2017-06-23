@@ -1,6 +1,6 @@
 {
   "name": "onny-immutable",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Onny utils for immutability",
   "main": "./dist/index.js",
   "scripts": {
@@ -28,7 +28,8 @@
   "homepage": "https://github.com/onnyio/onny-immutable#readme",
   "dependencies": {
     "immutability-helper": "^2.1.2",
-    "onny-utils": "^1.0.1"
+    "onny-utils": "^1.0.1",
+    "onny-validate": "0.0.4"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",

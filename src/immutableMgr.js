@@ -81,6 +81,15 @@ export const updateIn = (state, locArray, func) => new Mutations(state).updateIn
 export const remove = (state, loc) => new Mutations(state).deleteIn([loc]).getState();
 
 /**
+ * removeIn
+ *
+ * @param {object} state - source state
+ * @param {string[]} locArray - array leading to desired location
+ * @return {object} - new object without the loc
+ */
+export const removeIn = (state, locArray) => new Mutations(state).deleteIn(locArray).getState();
+
+/**
  * @param {object} state - source state
  * @param {Object|Array} value to be merged
  */

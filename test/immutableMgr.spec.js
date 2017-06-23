@@ -379,4 +379,75 @@ describe('immutableMgr', () => {
       expect(result).to.equal(state);
     });
   }); // pullAtIn
+
+
+  // remove
+  /////////////////
+
+  describe('remove', () => {
+    beforeEach(() => {
+      origState = {
+        defaultProp1: {
+          nestedProp1: ['nestedProp1', 'nestedProp2', 'nestedProp3']
+        },
+        defaultProp2,
+        defaultProp3
+      };
+      state = cloneDeep(origState);
+    });
+    it('remove from an empty source state, returning the original state', () => {
+      result = immutableMgr.remove(emptyState, defaultProp1);
+      expect(result).to.equal(emptyState);
+    });
+
+    it('Does not mutate original state', () => {
+      result = immutableMgr.remove(state, defaultProp1);
+      expect(state).to.deep.equal(origState);
+    });
+
+    it('Removes loc', () => {
+      result = immutableMgr.remove(state, defaultProp1);
+      expect(result).to.deep.equal({
+        defaultProp2,
+        defaultProp3
+      });
+    });
+  }); // remove
+
+
+  // removeIn
+  /////////////////
+
+  describe('removeIn', () => {
+    beforeEach(() => {
+      origState = {
+        defaultProp1: {
+          nestedProp1: ['nestedProp1', 'nestedProp2', 'nestedProp3']
+        },
+        defaultProp2,
+        defaultProp3
+      };
+      state = cloneDeep(origState);
+    });
+    it('remove from an empty source state, returning the original state', () => {
+      result = immutableMgr.removeIn(emptyState, [defaultProp1, nestedProp1]);
+      expect(result).to.equal(emptyState);
+    });
+
+    it('Does not mutate original state', () => {
+      result = immutableMgr.removeIn(state, [defaultProp1, nestedProp1]);
+      expect(state).to.deep.equal(origState);
+    });
+
+    it('Removes locArray', () => {
+      result = immutableMgr.removeIn(state, [defaultProp1, nestedProp1]);
+      expect(result).to.deep.equal({
+        defaultProp1: {
+        },
+        defaultProp2,
+        defaultProp3
+      });
+    });
+
+  }); // removeIn
 }); // immutableMgr
