@@ -286,7 +286,7 @@ describe('immutableMgr', () => {
   // push
   /////////////////
 
-  describe.only('push', () => {
+  describe('push', () => {
     beforeEach(() => {
       origState = {
         defaultProp1: {
@@ -360,7 +360,7 @@ describe('immutableMgr', () => {
   // unshift
   /////////////////
 
-  describe.only('unshift', () => {
+  describe('unshift', () => {
     beforeEach(() => {
       origState = {
         defaultProp1: {
@@ -403,7 +403,7 @@ describe('immutableMgr', () => {
   // unshiftIn
   /////////////////
 
-  describe.only('unshiftIn', () => {
+  describe('unshiftIn', () => {
     beforeEach(() => {
       origState = {
         defaultProp1: {
