@@ -26,6 +26,8 @@ import {
   mergeIn,
   push,
   pushIn,
+  unshift,
+  unshiftIn,
   pullAtIn,
   withMutations
 } from './immutableMgr';
@@ -37,7 +39,7 @@ module.exports = {
    * clear
    * @return {{}}
    */
-  clear: () =>clear({}),
+  clear: () => clear({}),
 
   /**
    * @param {object} state
@@ -137,6 +139,24 @@ module.exports = {
    * @param {Array} value
    */
   push: (state, loc, value) => push(state, loc, value),
+
+  /**
+   * Adds new items to the beginning of an existing array
+   *
+   * @param {Object} state - source state
+   * @param {String} loc - desired location (1 deep) in object
+   * @param {Array} value
+   */
+  unshift: (state, loc, value) => unshift(state, loc, value),
+
+  /**
+   * Adds new items to the beginning of an existing array at a desired location
+   *
+   * @param {object} state - source state
+   * @param {string[]} locArray - array leading to desired location
+   * @param {Array} value
+   */
+  unshiftIn: (state, locArray, value) => unshiftIn(state, locArray, value),
 
 
   pullAtIn: (state, locArray, index) => pullAtIn(state, locArray, index),
