@@ -4,6 +4,7 @@
 src
 test
 .babelrc
+package-lock.json
 
 .idea/**
 

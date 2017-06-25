@@ -22,7 +22,7 @@ import {
   isEmpty,
   isEqual
 } from 'onny-utils';
-import { isNull} from 'onny-validate';
+import { isNull } from 'onny-validate';
 import immutableCommands from './immutableCommands';
 
 
@@ -121,7 +121,7 @@ const doesLocExist = (state, locArray) => getInCopy(state, locArray) !== null //
 /////////////////////////////
 
 /**
- * @class OnnyImmutable.Mutations
+ * @class Mutations
  */
 export default class Mutations {
   constructor(state = {}) {
@@ -249,7 +249,7 @@ export default class Mutations {
 
 
   /**
-   * push onto an existing array
+   * push onto the end of an existing array
    *
    * @param {String} loc - desired location
    * @param {Array} value - array of values to push
@@ -260,7 +260,7 @@ export default class Mutations {
   }
 
   /**
-   * push onto an existing array at a desired location
+   * push onto the end of an existing array at a desired location
    *
    * @param {string[]} locArray - array leading to desired location
    * @param {Array} value - array of values to push
@@ -269,15 +269,42 @@ export default class Mutations {
   pushIn(locArray, value) {
     const placeholder = addObjPlaceholder(this.state, locArray, true);
 
-    // // make sure we exist and we're an array, otherwise bail
-    // if (!doesLocExist(placeholder, locArray, isType.array)) {
-    //  return this;
-    // }
     // make sure we exist and we're an array, otherwise bail
     if (!isType.array(getInCopy(placeholder, locArray))) {
       return this;
     }
     const pushed = useCommandIn(locArray, immutableCommands.push(value));
+    this.state = update(placeholder, pushed);
+    return this;
+  }
+
+
+  /**
+   * Adds new items to the beginning of an existing array
+   *
+   * @param {String} loc - desired location
+   * @param {Array} value - array of values to add to beginning
+   * @return {Mutations}
+   */
+  unshift(loc, value) {
+    return this.unshiftIn([loc], value);
+  }
+
+  /**
+   * Adds new items to the beginning of an existing array at a desired location
+   *
+   * @param {string[]} locArray - array leading to desired location
+   * @param {Array} value - array of values to add to beginning
+   * @return {Mutations}
+   */
+  unshiftIn(locArray, value) {
+    const placeholder = addObjPlaceholder(this.state, locArray, true);
+
+    // make sure we exist and we're an array, otherwise bail
+    if (!isType.array(getInCopy(placeholder, locArray))) {
+      return this;
+    }
+    const pushed = useCommandIn(locArray, immutableCommands.unshift(value));
     this.state = update(placeholder, pushed);
     return this;
   }
@@ -316,11 +343,9 @@ export default class Mutations {
     // assign us to the newly created pointer
     this.state = objPointer;
 
-    let next;
-
     for (let i = 0; i < locArray.length; i += 1) {
       // if the next step in array doesn't exist, bail now
-      if(isNull(objPointer[locArray[i]])){
+      if (isNull(objPointer[locArray[i]])) {
         return this;
       }
 

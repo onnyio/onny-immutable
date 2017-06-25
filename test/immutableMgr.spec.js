@@ -21,6 +21,8 @@ const nestedProp1 = 'nestedProp1';
 const defaultProp1 = 'defaultProp1';
 const defaultProp2 = 'defaultProp2';
 const defaultProp3 = 'defaultProp3';
+const defaultArrayItem = 'defaultArrayItem';
+const defaultArray = [defaultArrayItem];
 const addProp4 = 'addProp4';
 
 let result;
@@ -284,7 +286,17 @@ describe('immutableMgr', () => {
   // push
   /////////////////
 
-  describe('push', () => {
+  describe.only('push', () => {
+    beforeEach(() => {
+      origState = {
+        defaultProp1: {
+          nestedProp1
+        },
+        defaultProp2,
+        defaultProp3 : defaultArray
+      };
+      state = cloneDeep(origState);
+    });
     it('Push onto an empty source state, creating the array', () => {
       result = immutableMgr.push({}, addProp4, [addProp4]);
       expect(result.addProp4.length).to.equal(1);
@@ -292,13 +304,17 @@ describe('immutableMgr', () => {
     });
 
     it('Does not mutate original state', () => {
-      result = immutableMgr.push(state, addProp4, [addProp4]);
+      result = immutableMgr.push(state, defaultProp3, [addProp4]);
+      expect(state).to.deep.equal(origState);
+    });
+
+    it('Pushes new element to end of array', () => {
+      result = immutableMgr.push(state, defaultProp3, [addProp4]);
       expect(state).to.deep.equal(origState);
       expect(result).to.deep.equal({
         defaultProp1: { nestedProp1 },
         defaultProp2,
-        defaultProp3,
-        addProp4: [addProp4]
+        defaultProp3: [defaultArrayItem, addProp4]
       });
     });
     // TODO: is this the behavior we want?
@@ -338,6 +354,81 @@ describe('immutableMgr', () => {
       result = immutableMgr.pushIn(state, [defaultProp1, nestedProp1], [addProp4]);
       expect(result.defaultProp1.nestedProp1.length).to.equal(2);
       expect(result.defaultProp1.nestedProp1[1]).to.equal(addProp4);
+    });
+  }); // pushIn
+
+  // unshift
+  /////////////////
+
+  describe.only('unshift', () => {
+    beforeEach(() => {
+      origState = {
+        defaultProp1: {
+          nestedProp1
+        },
+        defaultProp2,
+        defaultProp3 : defaultArray
+      };
+      state = cloneDeep(origState);
+    });
+
+    it('unshift onto the front of an empty source state, creating the array', () => {
+      result = immutableMgr.unshift({}, addProp4, [addProp4]);
+      expect(result.addProp4.length).to.equal(1);
+      expect(result.addProp4[0]).to.equal(addProp4);
+    });
+
+    it('Does not mutate original state', () => {
+      result = immutableMgr.unshift(state, defaultProp3, [addProp4]);
+      expect(state).to.deep.equal(origState);
+    });
+
+    it('Unshifts new item to beginning of array', () => {
+      result = immutableMgr.unshift(state, defaultProp3, [addProp4]);
+      expect(result).to.deep.equal({
+        defaultProp1: { nestedProp1 },
+        defaultProp2,
+        defaultProp3: [addProp4, defaultArrayItem]
+      });
+    });
+    // TODO: is this the behavior we want?
+    it('does not overwrite an existing non-array prop, leaving unmutated', () => {
+      result = immutableMgr.unshift(state, defaultProp1, [addProp4]);
+      expect(state).to.deep.equal(result);
+    });
+
+  }); // unshift
+
+
+  // unshiftIn
+  /////////////////
+
+  describe.only('unshiftIn', () => {
+    beforeEach(() => {
+      origState = {
+        defaultProp1: {
+          nestedProp1: [nestedProp1]
+        },
+        defaultProp2,
+        defaultProp3
+      };
+      state = cloneDeep(origState);
+    });
+    it('Push onto an empty source state, creating the array', () => {
+      result = immutableMgr.unshiftIn({}, [defaultProp1, nestedProp1], [addProp4]);
+      expect(result.defaultProp1.nestedProp1.length).to.equal(1);
+      expect(result.defaultProp1.nestedProp1[0]).to.equal(addProp4);
+    });
+
+    it('Does not mutate original state', () => {
+      result = immutableMgr.unshiftIn(state, [defaultProp1, nestedProp1], [addProp4]);
+      expect(state).to.deep.equal(origState);
+    });
+
+    it('Merges at desired location', () => {
+      result = immutableMgr.unshiftIn(state, [defaultProp1, nestedProp1], [addProp4]);
+      expect(result.defaultProp1.nestedProp1.length).to.equal(2);
+      expect(result.defaultProp1.nestedProp1[0]).to.equal(addProp4);
     });
   }); // pushIn
 

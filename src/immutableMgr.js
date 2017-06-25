@@ -121,6 +121,25 @@ export const pushIn = (state, locArray, value) => new Mutations(state).pushIn(lo
  */
 export const push = (state, loc, value) => new Mutations(state).push(loc, value).getState();
 
+/**
+ * Adds new items to the beginning of an existing array
+ *
+ * @param {Object} state - source state
+ * @param {String} loc - desired location (1 deep) in object
+ * @param {Array} value
+ */
+export const unshift = (state, loc, value) => new Mutations(state).unshift(loc, value).getState();
+
+/**
+ * Adds new items to the beginning of an existing array at a desired location
+ *
+ * @param {object} state - source state
+ * @param {string[]} locArray - array leading to desired location
+ * @param {Array} value
+ */
+export const unshiftIn = (state, locArray, value) => new Mutations(state).unshiftIn(locArray, value)
+  .getState();
+
 // filter: (state, loc, predicate) => new Mutations(state).filter(loc, predicate).getState(),
 
 export const pullAtIn = (state, locArray, index) => new Mutations(state).pullAtIn(locArray, index)
@@ -140,4 +159,4 @@ export const pullAtIn = (state, locArray, index) => new Mutations(state).pullAtI
  * @param {mutationCallback} func - function full of mutations to make. must return {Mutations}
  * @return {Object} - new object with all the changes made
  */
-export const withMutations = (state, func) => func(new Mutations(state)).getState()
+export const withMutations = (state, func) => func(new Mutations(state)).getState();
