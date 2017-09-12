@@ -140,7 +140,8 @@ export default class Mutations {
     if (isEqual(this.state, this.originalState)) {
       return this.originalState;
     }
-    return this.state;
+    // if we don't exist, make sure to return undefined to make use of defaultProps
+    return this.state || undefined;
   }
 
   /**
@@ -189,6 +190,9 @@ export default class Mutations {
   }
 
   update(loc, func) {
+    if (isEmpty(this.state) || isNull(this.state)) {
+      return this;
+    }
     this.state = update(this.state, {
       [loc]: immutableCommands.apply(func)
     });

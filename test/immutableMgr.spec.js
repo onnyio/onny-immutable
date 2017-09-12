@@ -84,22 +84,22 @@ describe('immutableMgr', () => {
 
     it('empty state', () => {
       result = immutableMgr.getIn({}, [loc]);
-      expect(result).to.deep.equal(null);
+      expect(result).to.deep.equal(undefined);
     });
 
     it('invalid location', () => {
       result = immutableMgr.getIn(state, [null]);
-      expect(result).to.deep.equal(null);
+      expect(result).to.deep.equal(undefined);
     });
 
     it('has non-array location', () => {
       result = immutableMgr.getIn(state, defaultProp3);
-      expect(result).to.deep.equal(null);
+      expect(result).to.deep.equal(undefined);
     });
 
     it('incorrect location', () => {
       result = immutableMgr.getIn(state, [defaultProp1, defaultProp2]);
-      expect(result).to.deep.equal(null);
+      expect(result).to.deep.equal(undefined);
     });
 
     it('Returns correct prop', () => {
