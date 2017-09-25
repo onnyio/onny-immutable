@@ -227,6 +227,11 @@ describe('immutableMgr', () => {
   /////////////////
 
   describe('merge', () => {
+    it('Merges with undefined source state', () => {
+      result = immutableMgr.merge(undefined, origState.defaultProp1);
+      expect(result).to.deep.equal({ nestedProp1 });
+    });
+
     it('Merges with empty source state', () => {
       result = immutableMgr.merge({}, origState.defaultProp1);
       expect(result).to.deep.equal({ nestedProp1 });
@@ -249,6 +254,10 @@ describe('immutableMgr', () => {
   /////////////////
 
   describe('mergeIn', () => {
+    it('Merges with undefined source state', () => {
+      result = immutableMgr.mergeIn(undefined, [defaultProp1], origState.defaultProp1);
+      expect(result).to.deep.equal({ defaultProp1: { nestedProp1 } });
+    });
     it('Merges with empty source state', () => {
       result = immutableMgr.mergeIn({}, [defaultProp1], origState.defaultProp1);
       expect(result).to.deep.equal({ defaultProp1: { nestedProp1 } });
