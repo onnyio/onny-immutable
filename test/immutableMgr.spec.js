@@ -120,7 +120,7 @@ describe('immutableMgr', () => {
     });
 
 
-    it('invalid location returns null', () => {
+    it('invalid location returns state', () => {
       result = immutableMgr.set(state, null, defaultProp1);
       expect(result).to.deep.equal(state);
     });
@@ -146,6 +146,58 @@ describe('immutableMgr', () => {
       result = immutableMgr.set(state, 'defaultProp1', addProp4);
       expect(result).to.deep.equal({
         defaultProp1: addProp4,
+        defaultProp2,
+        defaultProp3
+      });
+    });
+  }); // set
+
+  // setIn
+  /////////////////
+
+  describe('setIn', () => {
+
+    beforeEach(() => {
+      loc = ['defaultProp1', 'nestedProp1'];
+    });
+
+    it('Has empty source state', () => {
+      result = immutableMgr.setIn({}, loc, defaultProp1);
+      expect(result).to.deep.equal({
+        defaultProp1: {
+          nestedProp1: defaultProp1
+        }
+      });
+    });
+
+    it('invalid location returns state', () => {
+      result = immutableMgr.setIn(state, null, defaultProp1);
+      expect(result).to.deep.equal(state);
+    });
+
+
+    it('Does not mutate original state', () => {
+      result = immutableMgr.setIn(state, loc, addProp4);
+      expect(result).to.not.deep.equal(state);
+      expect(state).to.deep.equal(origState);
+    });
+
+    it('Creates and sets new location', () => {
+      result = immutableMgr.setIn(state, ['defaultProp1', 'addProp4'], addProp4);
+      expect(result).to.deep.equal({
+        defaultProp1: {
+          nestedProp1,
+          addProp4
+        },
+        defaultProp2,
+        defaultProp3
+      });
+    });
+
+    it('Replaces existing location', () => {
+      result = immutableMgr.setIn(state, loc, addProp4);
+      expect(result).to.deep.equal({
+        defaultProp1: { nestedProp1: addProp4 },
         defaultProp2,
         defaultProp3
       });
@@ -302,7 +354,7 @@ describe('immutableMgr', () => {
           nestedProp1
         },
         defaultProp2,
-        defaultProp3 : defaultArray
+        defaultProp3: defaultArray
       };
       state = cloneDeep(origState);
     });
@@ -376,7 +428,7 @@ describe('immutableMgr', () => {
           nestedProp1
         },
         defaultProp2,
-        defaultProp3 : defaultArray
+        defaultProp3: defaultArray
       };
       state = cloneDeep(origState);
     });
@@ -542,8 +594,7 @@ describe('immutableMgr', () => {
     it('Removes locArray', () => {
       result = immutableMgr.removeIn(state, [defaultProp1, nestedProp1]);
       expect(result).to.deep.equal({
-        defaultProp1: {
-        },
+        defaultProp1: {},
         defaultProp2,
         defaultProp3
       });
