@@ -177,7 +177,10 @@ export default class Mutations {
    * @return {Mutations}
    */
   setIn(locArray, value) {
-    this.state = update(this.state, useCommandIn(locArray, immutableCommands.set(value)));
+    if (!locArray) { return this; }
+    const placeholder = addObjPlaceholder(this.state, locArray);
+    this.state = update(placeholder, useCommandIn(locArray, immutableCommands.set(value)));
+
     return this;
   }
 
