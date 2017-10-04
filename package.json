@@ -1,6 +1,6 @@
 {
   "name": "onny-immutable",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Onny utils for immutability",
   "main": "./dist/index.js",
   "scripts": {
