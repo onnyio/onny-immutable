@@ -26,6 +26,7 @@ const defaultArray = [defaultArrayItem];
 const addProp4 = 'addProp4';
 
 let result;
+let result2;
 let origState;
 let state;
 let loc;
@@ -36,7 +37,8 @@ describe('immutableMgr', () => {
     origState = {
       defaultProp1: { nestedProp1 },
       defaultProp2,
-      defaultProp3
+      defaultProp3,
+      defaultArray
     };
     state = cloneDeep(origState);
     loc = null;
@@ -72,6 +74,17 @@ describe('immutableMgr', () => {
       result = immutableMgr.get(state, defaultProp3);
       expect(result).to.equal(defaultProp3);
     });
+
+    it('Returns un-mutated prop', () => {
+      result = immutableMgr.get(state, 'defaultArray');
+      expect(result).to.equal(state['defaultArray']);
+    });
+
+    it('Returns correct prop twice', () => {
+      result = immutableMgr.get(state, defaultProp3);
+      result2 = immutableMgr.get(state, defaultProp3);
+      expect(result).to.equal(result2);
+    });
   }); // get
 
   // getIn
@@ -106,13 +119,24 @@ describe('immutableMgr', () => {
       result = immutableMgr.getIn(state, loc);
       expect(result).to.equal(nestedProp1);
     });
+
+    it('Returns un-mutated prop', () => {
+      result = immutableMgr.getIn(state, loc);
+      expect(result).to.equal(state['defaultProp1']['nestedProp1']);
+    });
+
+    it('Returns correct prop twice', () => {
+      result = immutableMgr.getIn(state, loc);
+      result2 = immutableMgr.getIn(state, loc);
+      expect(result).to.equal(result2);
+    });
   }); // getIn
 
   // set
   /////////////////
 
   describe('set', () => {
-    it('Has empty source state', () => {
+    it('Has empty source state - Deep Equal', () => {
       result = immutableMgr.set({}, defaultProp1, defaultProp1);
       expect(result).to.deep.equal({
         defaultProp1
@@ -122,10 +146,12 @@ describe('immutableMgr', () => {
 
     it('invalid location returns state', () => {
       result = immutableMgr.set(state, null, defaultProp1);
-      expect(result).to.deep.equal(state);
+      expect(result).to.equal(state);
     });
 
-    it('Does not mutate original state', () => {
+    it('Does not mutate original state - Deep Equal', () => {
+      // we already shown 'state' returns the exact same object using set if nothing changes
+      // now verify that it still contains the original values with a deep equal
       result = immutableMgr.set(state, addProp4, addProp4);
       expect(state).to.deep.equal(origState);
     });
@@ -138,8 +164,17 @@ describe('immutableMgr', () => {
         },
         defaultProp2,
         defaultProp3,
+        defaultArray,
         addProp4
       });
+    });
+
+    it('New location does not mutate other elements', () => {
+      result = immutableMgr.set(state, addProp4, addProp4);
+      expect(result.defaultProp1).to.equal(state.defaultProp1);
+      expect(result.defaultProp2).to.equal(state.defaultProp2);
+      expect(result.defaultProp3).to.equal(state.defaultProp3);
+      expect(result['defaultArray']).to.equal(state['defaultArray']);
     });
 
     it('Replaces existing location', () => {
@@ -147,8 +182,16 @@ describe('immutableMgr', () => {
       expect(result).to.deep.equal({
         defaultProp1: addProp4,
         defaultProp2,
-        defaultProp3
+        defaultProp3,
+        defaultArray
       });
+    });
+
+    it('Replacing location does not mutate other elements', () => {
+      result = immutableMgr.set(state, addProp4, addProp4);
+      expect(result.defaultProp2).to.equal(state.defaultProp2);
+      expect(result.defaultProp3).to.equal(state.defaultProp3);
+      expect(result['defaultArray']).to.equal(state['defaultArray']);
     });
   }); // set
 
@@ -176,7 +219,7 @@ describe('immutableMgr', () => {
     });
 
 
-    it('Does not mutate original state', () => {
+    it('Does not mutate original state - Deep Equal', () => {
       result = immutableMgr.setIn(state, loc, addProp4);
       expect(result).to.not.deep.equal(state);
       expect(state).to.deep.equal(origState);
@@ -190,8 +233,17 @@ describe('immutableMgr', () => {
           addProp4
         },
         defaultProp2,
-        defaultProp3
+        defaultProp3,
+        defaultArray
       });
+    });
+
+    it('New location does not mutate other elements', () => {
+      result = immutableMgr.setIn(state, ['defaultProp1', 'addProp4'], addProp4);
+      expect(result.defaultProp1.nestedProp1).to.equal(state.defaultProp1.nestedProp1);
+      expect(result.defaultProp2).to.equal(state.defaultProp2);
+      expect(result.defaultProp3).to.equal(state.defaultProp3);
+      expect(result['defaultArray']).to.equal(state['defaultArray']);
     });
 
     it('Replaces existing location', () => {
@@ -199,10 +251,18 @@ describe('immutableMgr', () => {
       expect(result).to.deep.equal({
         defaultProp1: { nestedProp1: addProp4 },
         defaultProp2,
-        defaultProp3
+        defaultProp3,
+        defaultArray
       });
     });
-  }); // set
+
+    it('Replacing location does not mutate other elements', () => {
+      result = immutableMgr.setIn(state, loc, addProp4);
+      expect(result.defaultProp2).to.equal(state.defaultProp2);
+      expect(result.defaultProp3).to.equal(state.defaultProp3);
+      expect(result['defaultArray']).to.equal(state['defaultArray']);
+    });
+  }); // setIn
 
   // Update
   /////////////////
@@ -232,8 +292,16 @@ describe('immutableMgr', () => {
       expect(result).to.deep.equal({
         defaultProp1: addProp4,
         defaultProp2,
-        defaultProp3
+        defaultProp3,
+        defaultArray
       });
+    });
+
+    it('does not mutate other elements', () => {
+      result = immutableMgr.update(state, 'defaultProp1', updateFunc);
+      expect(result.defaultProp2).to.equal(state.defaultProp2);
+      expect(result.defaultProp3).to.equal(state.defaultProp3);
+      expect(result['defaultArray']).to.equal(state['defaultArray']);
     });
   }); // update
 
@@ -265,8 +333,16 @@ describe('immutableMgr', () => {
       expect(result).to.deep.equal({
         defaultProp1: { nestedProp1: addProp4 },
         defaultProp2,
-        defaultProp3
+        defaultProp3,
+        defaultArray
       });
+    });
+
+    it('does not mutate other elements', () => {
+      result = immutableMgr.updateIn(state, [defaultProp1, nestedProp1], updateFunc);
+      expect(result.defaultProp2).to.equal(state.defaultProp2);
+      expect(result.defaultProp3).to.equal(state.defaultProp3);
+      expect(result['defaultArray']).to.equal(state['defaultArray']);
     });
 
     it('Does not create non-existent location', () => {
@@ -296,8 +372,38 @@ describe('immutableMgr', () => {
         defaultProp1: { nestedProp1 },
         defaultProp2,
         defaultProp3,
+        defaultArray,
         addProp4
       });
+    });
+
+
+    it('Merges and creates location if it does not exist', () => {
+      result = immutableMgr.merge(state, {addProp4});
+      expect(result).to.deep.equal({
+        defaultProp1: { nestedProp1 },
+        defaultProp2,
+        defaultProp3,
+        defaultArray,
+        addProp4
+      });
+    });
+
+    it('Merges and overwrites existing location', () => {
+      result = immutableMgr.merge(state, {defaultProp3: addProp4});
+      expect(result).to.deep.equal({
+        defaultProp1: { nestedProp1 },
+        defaultProp2,
+        defaultProp3:addProp4,
+        defaultArray,
+      });
+    });
+
+    it('Does not mutate other elements', () => {
+      result = immutableMgr.merge(state, {defaultProp3: addProp4});
+        expect(result.defaultProp1).to.equal(state.defaultProp1);
+        expect(result.defaultProp2).to.equal(state.defaultProp2);
+        expect(result['defaultArray']).to.equal(state['defaultArray']);
     });
   }); // merge
 
@@ -325,7 +431,8 @@ describe('immutableMgr', () => {
       expect(result).to.deep.equal({
         defaultProp1: { nestedProp1, addProp4 },
         defaultProp2,
-        defaultProp3
+        defaultProp3,
+        defaultArray
       });
     });
 
@@ -337,10 +444,19 @@ describe('immutableMgr', () => {
         },
         defaultProp2,
         defaultProp3,
+        defaultArray,
         addProp4: {
           nestedProp1
         }
       });
+    });
+
+    it('Does not mutate other elements', () => {
+      result = immutableMgr.mergeIn(state, [addProp4], { nestedProp1 });
+      expect(result.defaultProp1).to.equal(state.defaultProp1);
+      expect(result.defaultProp2).to.equal(state.defaultProp2);
+      expect(result.defaultProp3).to.equal(state.defaultProp3);
+      expect(result['defaultArray']).to.equal(state['defaultArray']);
     });
   }); // mergeIn
 
@@ -378,6 +494,13 @@ describe('immutableMgr', () => {
         defaultProp3: [defaultArrayItem, addProp4]
       });
     });
+
+    it('Does not mutate other elements', () => {
+      result = immutableMgr.push(state, defaultProp3, [addProp4]);
+      expect(result.defaultProp1).to.equal(state.defaultProp1);
+      expect(result.defaultProp2).to.equal(state.defaultProp2);
+      expect(result['defaultArray']).to.equal(state['defaultArray']);
+    });
     // TODO: is this the behavior we want?
     it('does not overwrite an existing non-array prop, leaving unmutated', () => {
       result = immutableMgr.push(state, defaultProp1, [addProp4]);
@@ -396,7 +519,8 @@ describe('immutableMgr', () => {
           nestedProp1: ['nestedProp1']
         },
         defaultProp2,
-        defaultProp3
+        defaultProp3,
+        defaultArray
       };
       state = cloneDeep(origState);
     });
@@ -415,6 +539,13 @@ describe('immutableMgr', () => {
       result = immutableMgr.pushIn(state, [defaultProp1, nestedProp1], [addProp4]);
       expect(result.defaultProp1.nestedProp1.length).to.equal(2);
       expect(result.defaultProp1.nestedProp1[1]).to.equal(addProp4);
+    });
+
+    it('Does not mutate other elements', () => {
+      result = immutableMgr.pushIn(state, [defaultProp1, nestedProp1], [addProp4]);
+      expect(result.defaultProp2).to.equal(state.defaultProp2);
+      expect(result.defaultProp3).to.equal(state.defaultProp3);
+      expect(result['defaultArray']).to.equal(state['defaultArray']);
     });
   }); // pushIn
 
@@ -452,6 +583,13 @@ describe('immutableMgr', () => {
         defaultProp3: [addProp4, defaultArrayItem]
       });
     });
+
+    it('Does not mutate other elements', () => {
+      result = immutableMgr.unshift(state, defaultProp3, [addProp4]);
+      expect(result.defaultProp1).to.equal(state.defaultProp1);
+      expect(result.defaultProp2).to.equal(state.defaultProp2);
+      expect(result['defaultArray']).to.equal(state['defaultArray']);
+    });
     // TODO: is this the behavior we want?
     it('does not overwrite an existing non-array prop, leaving unmutated', () => {
       result = immutableMgr.unshift(state, defaultProp1, [addProp4]);
@@ -471,7 +609,8 @@ describe('immutableMgr', () => {
           nestedProp1: [nestedProp1]
         },
         defaultProp2,
-        defaultProp3
+        defaultProp3,
+        defaultArray
       };
       state = cloneDeep(origState);
     });
@@ -481,7 +620,7 @@ describe('immutableMgr', () => {
       expect(result.defaultProp1.nestedProp1[0]).to.equal(addProp4);
     });
 
-    it('Does not mutate original state', () => {
+    it('Does not mutate original state - Deep Equal', () => {
       result = immutableMgr.unshiftIn(state, [defaultProp1, nestedProp1], [addProp4]);
       expect(state).to.deep.equal(origState);
     });
@@ -490,6 +629,13 @@ describe('immutableMgr', () => {
       result = immutableMgr.unshiftIn(state, [defaultProp1, nestedProp1], [addProp4]);
       expect(result.defaultProp1.nestedProp1.length).to.equal(2);
       expect(result.defaultProp1.nestedProp1[0]).to.equal(addProp4);
+    });
+
+    it('Does not mutate other elements', () => {
+      result = immutableMgr.unshiftIn(state, [defaultProp1, nestedProp1], [addProp4]);
+      expect(result.defaultProp2).to.equal(state.defaultProp2);
+      expect(result.defaultProp3).to.equal(state.defaultProp3);
+      expect(result['defaultArray']).to.equal(state['defaultArray']);
     });
   }); // pushIn
 
@@ -504,7 +650,8 @@ describe('immutableMgr', () => {
           nestedProp1: ['nestedProp1', 'nestedProp2', 'nestedProp3']
         },
         defaultProp2,
-        defaultProp3
+        defaultProp3,
+        defaultArray
       };
       state = cloneDeep(origState);
     });
@@ -513,22 +660,27 @@ describe('immutableMgr', () => {
       expect(result).to.equal(emptyState);
     });
 
-    it('Does not mutate original state', () => {
+    it('Does not mutate original state - Deep Equal', () => {
       result = immutableMgr.pullAtIn(state, [defaultProp1, nestedProp1], 1);
       expect(state).to.deep.equal(origState);
+    });
+    it('pull invalid index, returning the original state', () => {
+      result = immutableMgr.pullAtIn(state, [defaultProp1, nestedProp1], 10);
+      expect(result).to.equal(state);
     });
 
     it('Pulls index from desired location', () => {
       result = immutableMgr.pullAtIn(state, [defaultProp1, nestedProp1], 1);
       expect(result.defaultProp1.nestedProp1.length).to.equal(2);
-      expect(result.defaultProp1.nestedProp1[0]).to
-        .equal(origState.defaultProp1.nestedProp1[0]);
-      expect(result.defaultProp1.nestedProp1[1]).to
-        .equal(origState.defaultProp1.nestedProp1[2]);
+      expect(result.defaultProp1.nestedProp1[0]).to.equal(origState.defaultProp1.nestedProp1[0]);
+      expect(result.defaultProp1.nestedProp1[1]).to.equal(origState.defaultProp1.nestedProp1[2]);
     });
-    it('pull invalid index, returning the original state', () => {
-      result = immutableMgr.pullAtIn(state, [defaultProp1, nestedProp1], 10);
-      expect(result).to.equal(state);
+
+    it('Pulls index from desired location, leaves other untouched', () => {
+      result = immutableMgr.pullAtIn(state, [defaultProp1, nestedProp1], 1);
+      expect(result.defaultProp2).to.equal(state.defaultProp2);
+      expect(result.defaultProp3).to.equal(state.defaultProp3);
+      expect(result['defaultArray']).to.equal(state['defaultArray']);
     });
   }); // pullAtIn
 
@@ -557,12 +709,18 @@ describe('immutableMgr', () => {
       expect(state).to.deep.equal(origState);
     });
 
-    it('Removes loc', () => {
+    it('Removes loc - Deep Equal', () => {
       result = immutableMgr.remove(state, defaultProp1);
       expect(result).to.deep.equal({
         defaultProp2,
         defaultProp3
       });
+    });
+
+    it('Does not mutate other elements - Deep Equal', () => {
+      result = immutableMgr.remove(state, defaultProp1);
+      expect(result['defaultProp2']).to.equal(state['defaultProp2']);
+      expect(result['defaultProp3']).to.equal(state['defaultProp3']);
     });
   }); // remove
 
@@ -586,7 +744,7 @@ describe('immutableMgr', () => {
       expect(result).to.equal(emptyState);
     });
 
-    it('Does not mutate original state', () => {
+    it('Does not mutate original state - Deep Equal', () => {
       result = immutableMgr.removeIn(state, [defaultProp1, nestedProp1]);
       expect(state).to.deep.equal(origState);
     });
@@ -598,6 +756,13 @@ describe('immutableMgr', () => {
         defaultProp2,
         defaultProp3
       });
+    });
+
+    it('Does not mutate other elements - Deep Equal', () => {
+      result = immutableMgr.removeIn(state, [defaultProp1, nestedProp1]);
+      expect(result['defaultProp1']).to.deep.equal({});
+      expect(result['defaultProp2']).to.equal(state['defaultProp2']);
+      expect(result['defaultProp3']).to.equal(state['defaultProp3']);
     });
 
   }); // removeIn

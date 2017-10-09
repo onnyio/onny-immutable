@@ -12,16 +12,13 @@
 
 
 import reactUpdate from 'immutability-helper';
-import {
-  merge,
-  omit,
-  cloneDeep,
-  clone,
-  pullAt,
-  forEach,
-  isEmpty,
-  isEqual
-} from 'onny-utils';
+import merge from 'onny-utils/merge';
+import cloneDeep from 'onny-utils/cloneDeep';
+import clone from 'onny-utils/clone';
+import pullAt from 'onny-utils/pullAt';
+import forEach from 'onny-utils/forEach';
+import isEmpty from 'onny-utils/isEmpty';
+import isEqual from 'onny-utils/isEqual';
 import { isNull } from 'onny-validate';
 import immutableCommands from './immutableCommands';
 
@@ -48,7 +45,7 @@ const useCommandIn = (locArray, command) => {
   let objPointer = {};
   const fullObj = objPointer;
 
-  for (let i = 0; i < locArray.length; i += 1) {
+  for ( let i = 0; i < locArray.length; i += 1 ) {
     // make an object unless we're the last one
     if (i === (locArray.length - 1)) {
       objPointer[locArray[i]] = command;
@@ -88,8 +85,7 @@ const getInCopy = (state, locArray) => {
  * @return {*} ensures there is something at every step of locArray, placing {} if not
  */
 const addObjPlaceholder = (state, locArray, makeLastItemArray = false) => {
-  // make sure we're working on a copy, so we dont lose our place
-  let objPointer = cloneDeep(state);
+  let objPointer = state;
   // assign us to the newly created pointer
   const fullObj = objPointer;
 
@@ -126,8 +122,8 @@ const doesLocExist = (state, locArray) => getInCopy(state, locArray) !== null //
 export default class Mutations {
   constructor(state = {}) {
     // make a copy so we don't mess up the original
-    this.originalState = state;
-    this.state = cloneDeep(this.originalState);
+    this.state = state;
+    this.originalState = cloneDeep(this.state);
   }
 
   /**
@@ -138,7 +134,7 @@ export default class Mutations {
   getState() {
     // if the state hasn't change, return the original state to preserve shallow compares
     if (isEqual(this.state, this.originalState)) {
-      return this.originalState;
+      return this.state;
     }
     // if we don't exist, make sure to return undefined to make use of defaultProps
     return this.state || undefined;
@@ -177,7 +173,7 @@ export default class Mutations {
    * @return {Mutations}
    */
   setIn(locArray, value) {
-    if (!locArray) { return this; }
+    if (!locArray || isEmpty(locArray)) { return this; }
     const placeholder = addObjPlaceholder(this.state, locArray);
     this.state = update(placeholder, useCommandIn(locArray, immutableCommands.set(value)));
 
@@ -328,8 +324,13 @@ export default class Mutations {
     if (!isType.array(placeholder)) {
       return this;
     }
+    // make sure the index is valid
+    if( placeholder.length <= indexes){
+      return this;
+    }
     pullAt(placeholder, indexes);
-    return this.setIn(locArray, placeholder);
+    this.setIn(locArray, placeholder);
+    return this
   }
 
 
@@ -340,28 +341,15 @@ export default class Mutations {
    * @return {Mutations}
    */
   deleteIn(locArray) {
-    // early out if we only have 1
+    if(isEmpty(this.state) || locArray.length === 0) { return this;}
     if (locArray.length === 1) {
-      this.state = omit(this.state, locArray[0]);
+      this.state = update(this.state, immutableCommands.unset(locArray));
       return this;
     }
-    // make sure we're working on a copy, so we dont lose our place
-    let objPointer = cloneDeep(this.state);
-    // assign us to the newly created pointer
-    this.state = objPointer;
-
-    for (let i = 0; i < locArray.length; i += 1) {
-      // if the next step in array doesn't exist, bail now
-      if (isNull(objPointer[locArray[i]])) {
-        return this;
-      }
-
-      if (i <= (locArray.length - 2)) {
-        objPointer[locArray[i]] = omit(objPointer[locArray[i]], locArray[i + 1]);
-        return this;
-      }
-      objPointer = objPointer[locArray[i]];
-    }
+    const toDelete = [locArray[locArray.length-1]]
+    const location = locArray.slice(0, locArray.length-1);
+    const deleted = useCommandIn(location, immutableCommands.unset(toDelete));
+    this.state = update(this.state, deleted)
     return this;
   }
 }
