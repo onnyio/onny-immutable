@@ -20,6 +20,15 @@ module.exports = {
   set(value) {
     return { $set: value };
   },
+
+  /**
+   * remove the list of keys in array from the target object.
+   * @param {string[]} value
+   * @returns {{$set: *}}
+   */
+  unset(value) {
+    return { $unset: value };
+  },
   /**
    * merge the keys of object with the target.
    * @param value
