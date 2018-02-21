@@ -184,17 +184,7 @@ export default class Mutations {
     if (isEqual(this.state, value)) {
       return this;
     }
-
-    console.log('value', value)
-
-
     this.state = update(this.state, immutableCommands.set(value));
-
-    console.log('this.state', this)
-    // if (!loc) { return this; }
-    // this.state = update(this.state, {
-    //   [loc]: immutableCommands.set(value)
-    // });
     return this;
   }
 
