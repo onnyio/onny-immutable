@@ -158,6 +158,16 @@ describe('immutableMgr', () => {
       result = immutableMgr.set(state, state.defaultProp1);
       expect(result).to.equal(state.defaultProp1);
     });
+
+    it('replace with the exact same thing', () => {
+      result = immutableMgr.set(state, state);
+      expect(result).to.equal(state);
+    });
+
+    it('replace with the origState', () => {
+      result = immutableMgr.set(state, origState);
+      expect(result).to.deep.equal(state);
+    });
   }); // set
 
   // setIn
