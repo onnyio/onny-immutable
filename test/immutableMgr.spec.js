@@ -1,5 +1,5 @@
 /**
- * @Copyright (C) 2015-2017 Onny LLC - All Rights Reserved
+ * @Copyright (C) 2015-2018 Onny LLC - All Rights Reserved
  *
  * This file is part of onny-immutable and is the sole property of its owner.
  * Unauthorized use of this file, via any medium or form, whole or in part,
@@ -7,7 +7,7 @@
  *
  * This file is proprietary and confidential
  *
- * Last Modified: 2017.4.20
+ * Last Modified: 2018.2.21
  */
 
 
@@ -137,61 +137,26 @@ describe('immutableMgr', () => {
 
   describe('set', () => {
     it('Has empty source state - Deep Equal', () => {
-      result = immutableMgr.set({}, defaultProp1, defaultProp1);
-      expect(result).to.deep.equal({
-        defaultProp1
-      });
+      result = immutableMgr.set({}, { defaultProp1 });
+      expect(result).to.deep.equal({ defaultProp1 });
     });
 
 
-    it('invalid location returns state', () => {
-      result = immutableMgr.set(state, null, defaultProp1);
-      expect(result).to.equal(state);
+    it('Complete replace with valid source state - Deep Equal', () => {
+      result = immutableMgr.set(state, { defaultProp1 });
+      expect(result).to.deep.equal({ defaultProp1 });
     });
 
     it('Does not mutate original state - Deep Equal', () => {
       // we already shown 'state' returns the exact same object using set if nothing changes
       // now verify that it still contains the original values with a deep equal
-      result = immutableMgr.set(state, addProp4, addProp4);
+      result = immutableMgr.set(state, addProp4);
       expect(state).to.deep.equal(origState);
     });
 
-    it('Creates and sets new location', () => {
-      result = immutableMgr.set(state, addProp4, addProp4);
-      expect(result).to.deep.equal({
-        defaultProp1: {
-          nestedProp1
-        },
-        defaultProp2,
-        defaultProp3,
-        defaultArray,
-        addProp4
-      });
-    });
-
-    it('New location does not mutate other elements', () => {
-      result = immutableMgr.set(state, addProp4, addProp4);
-      expect(result.defaultProp1).to.equal(state.defaultProp1);
-      expect(result.defaultProp2).to.equal(state.defaultProp2);
-      expect(result.defaultProp3).to.equal(state.defaultProp3);
-      expect(result['defaultArray']).to.equal(state['defaultArray']);
-    });
-
-    it('Replaces existing location', () => {
-      result = immutableMgr.set(state, 'defaultProp1', addProp4);
-      expect(result).to.deep.equal({
-        defaultProp1: addProp4,
-        defaultProp2,
-        defaultProp3,
-        defaultArray
-      });
-    });
-
-    it('Replacing location does not mutate other elements', () => {
-      result = immutableMgr.set(state, addProp4, addProp4);
-      expect(result.defaultProp2).to.equal(state.defaultProp2);
-      expect(result.defaultProp3).to.equal(state.defaultProp3);
-      expect(result['defaultArray']).to.equal(state['defaultArray']);
+    it('maintains original element, deleting others in valid source state', () => {
+      result = immutableMgr.set(state, state.defaultProp1);
+      expect(result).to.equal(state.defaultProp1);
     });
   }); // set
 
@@ -379,7 +344,7 @@ describe('immutableMgr', () => {
 
 
     it('Merges and creates location if it does not exist', () => {
-      result = immutableMgr.merge(state, {addProp4});
+      result = immutableMgr.merge(state, { addProp4 });
       expect(result).to.deep.equal({
         defaultProp1: { nestedProp1 },
         defaultProp2,
@@ -390,20 +355,20 @@ describe('immutableMgr', () => {
     });
 
     it('Merges and overwrites existing location', () => {
-      result = immutableMgr.merge(state, {defaultProp3: addProp4});
+      result = immutableMgr.merge(state, { defaultProp3: addProp4 });
       expect(result).to.deep.equal({
         defaultProp1: { nestedProp1 },
         defaultProp2,
-        defaultProp3:addProp4,
-        defaultArray,
+        defaultProp3: addProp4,
+        defaultArray
       });
     });
 
     it('Does not mutate other elements', () => {
-      result = immutableMgr.merge(state, {defaultProp3: addProp4});
-        expect(result.defaultProp1).to.equal(state.defaultProp1);
-        expect(result.defaultProp2).to.equal(state.defaultProp2);
-        expect(result['defaultArray']).to.equal(state['defaultArray']);
+      result = immutableMgr.merge(state, { defaultProp3: addProp4 });
+      expect(result.defaultProp1).to.equal(state.defaultProp1);
+      expect(result.defaultProp2).to.equal(state.defaultProp2);
+      expect(result['defaultArray']).to.equal(state['defaultArray']);
     });
   }); // merge
 

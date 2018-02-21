@@ -1,5 +1,5 @@
 /**
- * @Copyright (C) 2015-2017 Onny LLC - All Rights Reserved
+ * @Copyright (C) 2015-2018 Onny LLC - All Rights Reserved
  *
  * This file is part of onny-immutable and is the sole property of its owner.
  * Unauthorized use of this file, via any medium or form, whole or in part,
@@ -7,7 +7,7 @@
  *
  * This file is proprietary and confidential
  *
- * Last Modified: 2017.4.20
+ * Last Modified: 2018.2.21
  */
 
 
@@ -59,11 +59,10 @@ module.exports = {
    * Set
    *
    * @param {object} state - state to update
-   * @param {string} loc - desired location (1 deep) in object
    * @param {*} value - the value to set it to
    * @return {object} - new object with the value in place
    */
-  set: (state, loc, value) => set(state, loc, value),
+  set: (state, value) => set(state, value),
 
   /**
    * SetIn

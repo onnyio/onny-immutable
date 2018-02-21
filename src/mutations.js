@@ -1,5 +1,5 @@
 /**
- * @Copyright (C) 2015-2017 Onny LLC - All Rights Reserved
+ * @Copyright (C) 2015-2018 Onny LLC - All Rights Reserved
  *
  * This file is part of onny-immutable and is the sole property of its owner.
  * Unauthorized use of this file, via any medium or form, whole or in part,
@@ -7,7 +7,7 @@
  *
  * This file is proprietary and confidential
  *
- * Last Modified: 2017.4.20
+ * Last Modified: 2018.2.21
  */
 
 
@@ -89,7 +89,7 @@ const addObjPlaceholder = (state, locArray, makeLastItemArray = false) => {
   // assign us to the newly created pointer
   const fullObj = objPointer;
 
-  for (let i = 0; i < locArray.length; i += 1) {
+  for ( let i = 0; i < locArray.length; i += 1 ) {
     if (!objPointer[locArray[i]]) {
       objPointer[locArray[i]] = {};
     }
@@ -180,11 +180,21 @@ export default class Mutations {
     return this;
   }
 
-  set(loc, value) {
-    if (!loc) { return this; }
-    this.state = update(this.state, {
-      [loc]: immutableCommands.set(value)
-    });
+  set(value) {
+    if (isEqual(this.state, value)) {
+      return this;
+    }
+
+    console.log('value', value)
+
+
+    this.state = update(this.state, immutableCommands.set(value));
+
+    console.log('this.state', this)
+    // if (!loc) { return this; }
+    // this.state = update(this.state, {
+    //   [loc]: immutableCommands.set(value)
+    // });
     return this;
   }
 
@@ -325,12 +335,12 @@ export default class Mutations {
       return this;
     }
     // make sure the index is valid
-    if( placeholder.length <= indexes){
+    if (placeholder.length <= indexes) {
       return this;
     }
     pullAt(placeholder, indexes);
     this.setIn(locArray, placeholder);
-    return this
+    return this;
   }
 
 
@@ -341,15 +351,15 @@ export default class Mutations {
    * @return {Mutations}
    */
   deleteIn(locArray) {
-    if(isEmpty(this.state) || locArray.length === 0) { return this;}
+    if (isEmpty(this.state) || locArray.length === 0) { return this;}
     if (locArray.length === 1) {
       this.state = update(this.state, immutableCommands.unset(locArray));
       return this;
     }
-    const toDelete = [locArray[locArray.length-1]]
-    const location = locArray.slice(0, locArray.length-1);
+    const toDelete = [locArray[locArray.length - 1]];
+    const location = locArray.slice(0, locArray.length - 1);
     const deleted = useCommandIn(location, immutableCommands.unset(toDelete));
-    this.state = update(this.state, deleted)
+    this.state = update(this.state, deleted);
     return this;
   }
 }
