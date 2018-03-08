@@ -7,7 +7,7 @@
  *
  * This file is proprietary and confidential
  *
- * Last Modified: 2018.2.21
+ * Last Modified: 2018.3.7
  */
 
 
@@ -45,7 +45,7 @@ const useCommandIn = (locArray, command) => {
   let objPointer = {};
   const fullObj = objPointer;
 
-  for ( let i = 0; i < locArray.length; i += 1 ) {
+  for (let i = 0; i < locArray.length; i += 1) {
     // make an object unless we're the last one
     if (i === (locArray.length - 1)) {
       objPointer[locArray[i]] = command;
@@ -89,7 +89,7 @@ const addObjPlaceholder = (state, locArray, makeLastItemArray = false) => {
   // assign us to the newly created pointer
   const fullObj = objPointer;
 
-  for ( let i = 0; i < locArray.length; i += 1 ) {
+  for (let i = 0; i < locArray.length; i += 1) {
     if (!objPointer[locArray[i]]) {
       objPointer[locArray[i]] = {};
     }
@@ -341,7 +341,7 @@ export default class Mutations {
    * @return {Mutations}
    */
   deleteIn(locArray) {
-    if (isEmpty(this.state) || locArray.length === 0) { return this;}
+    if (isEmpty(this.state) || !Array.isArray(locArray) || locArray.length === 0) { return this; }
     if (locArray.length === 1) {
       this.state = update(this.state, immutableCommands.unset(locArray));
       return this;
