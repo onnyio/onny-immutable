@@ -7,7 +7,7 @@
  *
  * This file is proprietary and confidential
  *
- * Last Modified: 2018.2.21
+ * Last Modified: 2018.3.10
  */
 
 
@@ -22,7 +22,6 @@ import {
   remove,
   removeIn,
   merge,
-  mergeDeep,
   mergeIn,
   push,
   pushIn,
@@ -114,9 +113,6 @@ module.exports = {
    * @param {Object|Array} value to be merged
    */
   merge: (state, value) => merge(state, value),
-
-  // TODO: remove mergeDeep... ALL immutable merges are deep merges. duh
-  mergeDeep: (state, value) => mergeDeep(state, value),
 
   /**
    * @param {object} state - source state

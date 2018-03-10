@@ -7,7 +7,7 @@
  *
  * This file is proprietary and confidential
  *
- * Last Modified: 2018.2.21
+ * Last Modified: 2018.3.10
  */
 
 
@@ -703,7 +703,7 @@ describe('immutableMgr', () => {
   // removeIn
   /////////////////
 
-  describe('removeIn', () => {
+  describe('removeIn/deleteIn', () => {
     beforeEach(() => {
       origState = {
         defaultProp1: {
@@ -717,6 +717,7 @@ describe('immutableMgr', () => {
     it('remove from an empty source state, returning the original state', () => {
       result = immutableMgr.removeIn(emptyState, [defaultProp1, nestedProp1]);
       expect(result).to.equal(emptyState);
+      expect(result).to.deep.equal({});
     });
 
     it('Does not mutate original state - Deep Equal', () => {
@@ -740,5 +741,71 @@ describe('immutableMgr', () => {
       expect(result['defaultProp3']).to.equal(state['defaultProp3']);
     });
 
-  }); // removeIn
+  }); // removeIn/deleteIn
+
+  describe('withMutations', () => {
+    beforeEach(() => {
+      origState = {
+        defaultProp1: {
+          nestedProp1: ['nestedProp1', 'nestedProp2', 'nestedProp3']
+        },
+        defaultProp2,
+        defaultProp3,
+        request: {
+          home: {
+            loading: 2,
+            loadingError: [],
+            loadingFailure: []
+          }
+        }
+      };
+      state = cloneDeep(origState);
+    });
+
+    it('clear', () => {
+      result = immutableMgr.withMutations(emptyState, (mutations => {
+        return mutations
+          .clear();
+
+      }));
+      expect(result).to.equal(emptyState);
+      expect(result).to.deep.equal({});
+    });
+
+    it('remove from an empty source state, returning the original state', () => {
+      result = immutableMgr.withMutations(emptyState, (mutations => {
+        return mutations
+          .deleteIn([defaultProp1, nestedProp1]);
+
+      }));
+      expect(result).to.equal(emptyState);
+      expect(result).to.deep.equal({});
+    });
+
+    it("remove nested item that doesn't exist returns state", () => {
+      const testState = {
+        defaultProp1: {
+          nestedProp1: ['nestedProp1', 'nestedProp2', 'nestedProp3']
+        },
+        defaultProp2,
+        defaultProp3,
+        request: {
+          home: {
+            loading: 2,
+            loadingError: [],
+            loadingFailure: []
+          }
+        }
+      };
+
+      const id = 'home';
+      result = immutableMgr.withMutations(testState, (mutations => {
+        const result = mutations
+          .deleteIn([id, 'loadingError'])
+          .deleteIn([id, 'loadingFailure']);
+        return result;
+      }));
+      expect(result).to.equal(testState);
+    });
+  });
 }); // immutableMgr

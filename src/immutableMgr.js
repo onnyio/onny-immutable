@@ -7,7 +7,7 @@
  *
  * This file is proprietary and confidential
  *
- * Last Modified: 2018.2.21
+ * Last Modified: 2018.3.10
  */
 
 
@@ -93,9 +93,6 @@ export const removeIn = (state, locArray) => new Mutations(state).deleteIn(locAr
  * @param {Object|Array} value to be merged
  */
 export const merge = (state, value) => new Mutations(state).merge(value).getState();
-
-// TODO: remove mergeDeep... ALL immutable merges are deep merges. duh
-export const mergeDeep = (state, value) => new Mutations(state).mergeDeep(value).getState();
 
 /**
  * @param {object} state - source state
