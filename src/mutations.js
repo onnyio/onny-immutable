@@ -7,7 +7,7 @@
  *
  * This file is proprietary and confidential
  *
- * Last Modified: 2018.3.7
+ * Last Modified: 2018.3.10
  */
 
 
@@ -108,8 +108,7 @@ const addObjPlaceholder = (state, locArray, makeLastItemArray = false) => {
   return fullObj;
 };
 
-const doesLocExist = (state, locArray) => getInCopy(state, locArray) !== null // turn into boolean
-;
+const doesLocExist = (state, locArray) => getInCopy(state, locArray) !== null; // turn into boolean
 
 
 /////////////////////////////
@@ -237,19 +236,6 @@ export default class Mutations {
     return this;
   }
 
-  /**
-   * mergeDeep
-   * @param {Object|array} value to be merged
-   * @return {Mutations}
-   */
-  mergeDeep(value) {
-    const deepCopy = cloneDeep(this.state);
-    const merged = merge(deepCopy, value);
-
-    this.state = update(this.state, immutableCommands.set(merged));
-    return this;
-  }
-
 
   /**
    * push onto the end of an existing array
@@ -341,7 +327,13 @@ export default class Mutations {
    * @return {Mutations}
    */
   deleteIn(locArray) {
-    if (isEmpty(this.state) || !Array.isArray(locArray) || locArray.length === 0) { return this; }
+    if (
+      isEmpty(this.state)
+      || !Array.isArray(locArray)
+      || locArray.length === 0
+      || !doesLocExist(this.state, locArray)
+    ) { return this; }
+
     if (locArray.length === 1) {
       this.state = update(this.state, immutableCommands.unset(locArray));
       return this;
