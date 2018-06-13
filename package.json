@@ -1,6 +1,6 @@
 {
   "name": "onny-immutable",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "description": "Onny utils for immutability",
   "main": "./dist/index.js",
   "scripts": {
@@ -27,13 +27,13 @@
   },
   "homepage": "https://github.com/onnyio/onny-immutable#readme",
   "dependencies": {
-    "immutability-helper": "^2.6.6",
-    "onny-utils": "^1.0.10",
-    "onny-validate": "0.0.6"
+    "immutability-helper": "^2.7.0",
+    "onny-utils": "^1.0.11",
+    "onny-validate": "0.0.8"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
-    "babel-eslint": "^8.2.2",
+    "babel-eslint": "^8.2.3",
     "babel-plugin-add-module-exports": "^0.2.1",
     "babel-plugin-istanbul": "^4.1.6",
     "babel-plugin-transform-runtime": "^6.23.0",
@@ -42,11 +42,11 @@
     "babel-preset-stage-0": "^6.24.1",
     "babel-register": "^6.24.1",
     "chai": "^4.1.2",
-    "coveralls": "^3.0.0",
-    "eslint": "^4.18.2",
-    "eslint-config-onny": "^1.0.7",
-    "mocha": "^5.0.4",
+    "coveralls": "^3.0.1",
+    "eslint": "^4.19.1",
+    "eslint-config-onny": "^1.0.8",
+    "mocha": "^5.2.0",
     "mocha-lcov-reporter": "^1.3.0",
-    "nyc": "^11.5.0"
+    "nyc": "^12.0.2"
   }
 }
