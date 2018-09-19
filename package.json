@@ -5,7 +5,7 @@
   "main": "./dist/index.js",
   "scripts": {
     "build": "rm -rf .\\dist&&babel src  --out-dir dist",
-    "prepublish": "npm run build",
+    "prepare": "npm run build",
     "lint": "eslint ./src --ext .js --format ./node_modules/eslint-config-onny/eslintFormat",
     "lint-fix": "eslint ./src --ext .js --format ./node_modules/eslint-config-onny/eslintFormat --fix",
     "lint-fix_test": "eslint ./test --ext .js --format ./node_modules/eslint-config-onny/eslintFormat --fix",
