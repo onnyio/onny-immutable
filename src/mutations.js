@@ -136,7 +136,8 @@ export default class Mutations {
       return this.state;
     }
     // if we don't exist, make sure to return undefined to make use of defaultProps
-    return this.state || undefined;
+    // TODO: is the the behavior we actually want? I kind of think we should return the value whatever it is
+    return this.state !== null ? this.state : undefined;
   }
 
   /**
