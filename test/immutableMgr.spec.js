@@ -120,6 +120,14 @@ describe('immutableMgr', () => {
       expect(result).to.equal(nestedProp1);
     });
 
+    it('Returns false instead of undefined if value is false', () => {
+      result = immutableMgr.getIn({
+        nestedProp1,
+        testBool: false
+      }, ['testBool']);
+      expect(result).to.be.false;
+    });
+
     it('Returns un-mutated prop', () => {
       result = immutableMgr.getIn(state, loc);
       expect(result).to.equal(state['defaultProp1']['nestedProp1']);
