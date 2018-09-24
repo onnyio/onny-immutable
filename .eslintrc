@@ -7,6 +7,6 @@
     "browser": true,
     "node": true,
     "mocha": true,
-    "es6": false
+    "es6": true
   }
 }
