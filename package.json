@@ -1,6 +1,6 @@
 {
   "name": "onny-immutable",
-  "version": "0.0.18",
+  "version": "0.0.19",
   "description": "Onny utils for immutability",
   "main": "./dist/index.js",
   "scripts": {
@@ -9,8 +9,8 @@
     "lint": "eslint ./src --ext .js --format ./node_modules/eslint-config-onny/eslintFormat",
     "lint-fix": "eslint ./src --ext .js --format ./node_modules/eslint-config-onny/eslintFormat --fix",
     "lint-fix_test": "eslint ./test --ext .js --format ./node_modules/eslint-config-onny/eslintFormat --fix",
-    "test_local": "mocha --require @babel/polyfill --require @babel/register",
-    "test": "nyc --require @babel/register --require @babel/polyfill mocha && nyc report --reporter=text-lcov | coveralls"
+    "test_local": "mocha --require @babel/register",
+    "test": "nyc --require @babel/register mocha && nyc report --reporter=text-lcov | coveralls"
   },
   "repository": {
     "type": "git",
@@ -28,36 +28,22 @@
   "homepage": "https://github.com/onnyio/onny-immutable#readme",
   "dependencies": {
     "immutability-helper": "^2.8.1",
-    "onny-utils": "^1.0.12",
+    "onny-utils": "^1.0.13",
     "onny-validate": "0.0.8"
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0",
     "@babel/core": "^7.0.0",
     "@babel/plugin-proposal-class-properties": "^7.0.0",
-    "@babel/plugin-proposal-decorators": "^7.0.0",
-    "@babel/plugin-proposal-do-expressions": "^7.0.0",
     "@babel/plugin-proposal-export-default-from": "^7.0.0",
     "@babel/plugin-proposal-export-namespace-from": "^7.0.0",
-    "@babel/plugin-proposal-function-bind": "^7.0.0",
-    "@babel/plugin-proposal-function-sent": "^7.0.0",
-    "@babel/plugin-proposal-json-strings": "^7.0.0",
-    "@babel/plugin-proposal-logical-assignment-operators": "^7.0.0",
-    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.0.0",
-    "@babel/plugin-proposal-numeric-separator": "^7.0.0",
-    "@babel/plugin-proposal-optional-chaining": "^7.0.0",
-    "@babel/plugin-proposal-pipeline-operator": "^7.0.0",
-    "@babel/plugin-proposal-throw-expressions": "^7.0.0",
     "@babel/plugin-syntax-dynamic-import": "^7.0.0",
     "@babel/plugin-syntax-import-meta": "^7.0.0",
-    "@babel/plugin-transform-runtime": "^7.0.0",
-    "@babel/polyfill": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
     "@babel/register": "^7.0.0",
-    "@babel/runtime": "^7.0.0",
     "babel-eslint": "^9.0.0",
-    "babel-plugin-add-module-exports": "^1.0.0",
     "babel-plugin-istanbul": "^5.0.1",
+    "babel-preset-minify": "^0.4.3",
     "chai": "^4.1.2",
     "coveralls": "^3.0.2",
     "eslint": "^5.6.0",
