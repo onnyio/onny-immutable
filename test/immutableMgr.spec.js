@@ -117,7 +117,20 @@ describe('immutableMgr', () => {
 
     it('Returns correct prop', () => {
       result = immutableMgr.getIn(state, loc);
+      const test = 'nestedProp1'
       expect(result).to.equal(nestedProp1);
+      expect(result).to.equal('nestedProp1');
+      expect(result).to.equal(test);
+    });
+
+    it('Returns correct object', () => {
+      // ensure we are returning the *actual* object, not just a copy of it
+      result = immutableMgr.getIn(state, [defaultProp1]);
+
+      expect(result).to.equal(state.defaultProp1);
+      expect(result).to.not.equal(origState.defaultProp1);
+      expect(result).to.deep.equal(origState.defaultProp1);
+      expect(result).to.deep.equal({nestedProp1: 'nestedProp1'});
     });
 
     it('Returns false instead of undefined if value is false', () => {
@@ -145,7 +158,9 @@ describe('immutableMgr', () => {
 
   describe('set', () => {
     it('Has empty source state - Deep Equal', () => {
-      result = immutableMgr.set({}, { defaultProp1 });
+      const src = { defaultProp1 }
+      result = immutableMgr.set({}, src);
+      expect(result).to.equal(src);
       expect(result).to.deep.equal({ defaultProp1 });
     });
 
