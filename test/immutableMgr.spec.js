@@ -426,6 +426,9 @@ describe('immutableMgr', () => {
 
     it('Merges at desired location', () => {
       result = immutableMgr.mergeIn(state, [defaultProp1], { addProp4 });
+      console.log('defaultProp1', defaultProp1)
+      console.log('state', state)
+      console.log('result', result)
       expect(result).to.deep.equal({
         defaultProp1: { nestedProp1, addProp4 },
         defaultProp2,
