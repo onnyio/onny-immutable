@@ -10,8 +10,9 @@
  * Last Modified: 2017.4.20
  */
 
+/* eslint-disable import/no-extraneous-dependencies */
 
-import chai, { expect } from 'chai';
+import { expect } from 'chai';
 import immutableCommands from '../src/immutableCommands';
 
 

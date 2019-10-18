@@ -1,0 +1,7 @@
+node_modules
+coverage/
+.babelrc
+package-lock.json
+.eslintrc
+.gitignore
+.travis.yml

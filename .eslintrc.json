@@ -8,5 +8,11 @@
     "node": true,
     "mocha": true,
     "es6": true
-  }
+  },
+  "plugins": [
+    "react",
+    "import",
+    "chai-expect",
+    "chai-friendly"
+  ]
 }

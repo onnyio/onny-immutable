@@ -10,11 +10,12 @@
  * Last Modified: 2018.3.10
  */
 
+/* eslint-disable import/no-extraneous-dependencies */
 
-import chai, { expect } from 'chai';
+import { isEqual, cloneDeep } from '@onny/utils';
+import { expect } from 'chai';
 import immutableMgr from '../src/index';
 import { emptyState } from '../src/mutations';
-import { isEqual, cloneDeep } from 'onny-utils';
 
 
 const nestedProp1 = 'nestedProp1';
@@ -77,7 +78,7 @@ describe('immutableMgr', () => {
 
     it('Returns un-mutated prop', () => {
       result = immutableMgr.get(state, 'defaultArray');
-      expect(result).to.equal(state['defaultArray']);
+      expect(result).to.equal(state.defaultArray);
     });
 
     it('Returns correct prop twice', () => {
@@ -117,7 +118,7 @@ describe('immutableMgr', () => {
 
     it('Returns correct prop', () => {
       result = immutableMgr.getIn(state, loc);
-      const test = 'nestedProp1'
+      const test = 'nestedProp1';
       expect(result).to.equal(nestedProp1);
       expect(result).to.equal('nestedProp1');
       expect(result).to.equal(test);
@@ -130,7 +131,7 @@ describe('immutableMgr', () => {
       expect(result).to.equal(state.defaultProp1);
       expect(result).to.not.equal(origState.defaultProp1);
       expect(result).to.deep.equal(origState.defaultProp1);
-      expect(result).to.deep.equal({nestedProp1: 'nestedProp1'});
+      expect(result).to.deep.equal({ nestedProp1: 'nestedProp1' });
     });
 
     it('Returns false instead of undefined if value is false', () => {
@@ -143,7 +144,7 @@ describe('immutableMgr', () => {
 
     it('Returns un-mutated prop', () => {
       result = immutableMgr.getIn(state, loc);
-      expect(result).to.equal(state['defaultProp1']['nestedProp1']);
+      expect(result).to.equal(state.defaultProp1.nestedProp1);
     });
 
     it('Returns correct prop twice', () => {
@@ -158,7 +159,7 @@ describe('immutableMgr', () => {
 
   describe('set', () => {
     it('Has empty source state - Deep Equal', () => {
-      const src = { defaultProp1 }
+      const src = { defaultProp1 };
       result = immutableMgr.set({}, src);
       expect(result).to.equal(src);
       expect(result).to.deep.equal({ defaultProp1 });
@@ -197,7 +198,6 @@ describe('immutableMgr', () => {
   /////////////////
 
   describe('setIn', () => {
-
     beforeEach(() => {
       loc = ['defaultProp1', 'nestedProp1'];
     });
@@ -241,7 +241,7 @@ describe('immutableMgr', () => {
       expect(result.defaultProp1.nestedProp1).to.equal(state.defaultProp1.nestedProp1);
       expect(result.defaultProp2).to.equal(state.defaultProp2);
       expect(result.defaultProp3).to.equal(state.defaultProp3);
-      expect(result['defaultArray']).to.equal(state['defaultArray']);
+      expect(result.defaultArray).to.equal(state.defaultArray);
     });
 
     it('Replaces existing location', () => {
@@ -258,7 +258,7 @@ describe('immutableMgr', () => {
       result = immutableMgr.setIn(state, loc, addProp4);
       expect(result.defaultProp2).to.equal(state.defaultProp2);
       expect(result.defaultProp3).to.equal(state.defaultProp3);
-      expect(result['defaultArray']).to.equal(state['defaultArray']);
+      expect(result.defaultArray).to.equal(state.defaultArray);
     });
   }); // setIn
 
@@ -299,7 +299,7 @@ describe('immutableMgr', () => {
       result = immutableMgr.update(state, 'defaultProp1', updateFunc);
       expect(result.defaultProp2).to.equal(state.defaultProp2);
       expect(result.defaultProp3).to.equal(state.defaultProp3);
-      expect(result['defaultArray']).to.equal(state['defaultArray']);
+      expect(result.defaultArray).to.equal(state.defaultArray);
     });
   }); // update
 
@@ -340,7 +340,7 @@ describe('immutableMgr', () => {
       result = immutableMgr.updateIn(state, [defaultProp1, nestedProp1], updateFunc);
       expect(result.defaultProp2).to.equal(state.defaultProp2);
       expect(result.defaultProp3).to.equal(state.defaultProp3);
-      expect(result['defaultArray']).to.equal(state['defaultArray']);
+      expect(result.defaultArray).to.equal(state.defaultArray);
     });
 
     it('Does not create non-existent location', () => {
@@ -401,7 +401,7 @@ describe('immutableMgr', () => {
       result = immutableMgr.merge(state, { defaultProp3: addProp4 });
       expect(result.defaultProp1).to.equal(state.defaultProp1);
       expect(result.defaultProp2).to.equal(state.defaultProp2);
-      expect(result['defaultArray']).to.equal(state['defaultArray']);
+      expect(result.defaultArray).to.equal(state.defaultArray);
     });
   }); // merge
 
@@ -426,9 +426,9 @@ describe('immutableMgr', () => {
 
     it('Merges at desired location', () => {
       result = immutableMgr.mergeIn(state, [defaultProp1], { addProp4 });
-      console.log('defaultProp1', defaultProp1)
-      console.log('state', state)
-      console.log('result', result)
+      // console.log('defaultProp1', defaultProp1);
+      // console.log('state', state);
+      // console.log('result', result);
       expect(result).to.deep.equal({
         defaultProp1: { nestedProp1, addProp4 },
         defaultProp2,
@@ -457,7 +457,7 @@ describe('immutableMgr', () => {
       expect(result.defaultProp1).to.equal(state.defaultProp1);
       expect(result.defaultProp2).to.equal(state.defaultProp2);
       expect(result.defaultProp3).to.equal(state.defaultProp3);
-      expect(result['defaultArray']).to.equal(state['defaultArray']);
+      expect(result.defaultArray).to.equal(state.defaultArray);
     });
   }); // mergeIn
 
@@ -500,7 +500,7 @@ describe('immutableMgr', () => {
       result = immutableMgr.push(state, defaultProp3, [addProp4]);
       expect(result.defaultProp1).to.equal(state.defaultProp1);
       expect(result.defaultProp2).to.equal(state.defaultProp2);
-      expect(result['defaultArray']).to.equal(state['defaultArray']);
+      expect(result.defaultArray).to.equal(state.defaultArray);
     });
     // TODO: is this the behavior we want?
     it('does not overwrite an existing non-array prop, leaving unmutated', () => {
@@ -546,7 +546,7 @@ describe('immutableMgr', () => {
       result = immutableMgr.pushIn(state, [defaultProp1, nestedProp1], [addProp4]);
       expect(result.defaultProp2).to.equal(state.defaultProp2);
       expect(result.defaultProp3).to.equal(state.defaultProp3);
-      expect(result['defaultArray']).to.equal(state['defaultArray']);
+      expect(result.defaultArray).to.equal(state.defaultArray);
     });
   }); // pushIn
 
@@ -589,14 +589,13 @@ describe('immutableMgr', () => {
       result = immutableMgr.unshift(state, defaultProp3, [addProp4]);
       expect(result.defaultProp1).to.equal(state.defaultProp1);
       expect(result.defaultProp2).to.equal(state.defaultProp2);
-      expect(result['defaultArray']).to.equal(state['defaultArray']);
+      expect(result.defaultArray).to.equal(state.defaultArray);
     });
     // TODO: is this the behavior we want?
     it('does not overwrite an existing non-array prop, leaving unmutated', () => {
       result = immutableMgr.unshift(state, defaultProp1, [addProp4]);
       expect(state).to.deep.equal(result);
     });
-
   }); // unshift
 
 
@@ -636,7 +635,7 @@ describe('immutableMgr', () => {
       result = immutableMgr.unshiftIn(state, [defaultProp1, nestedProp1], [addProp4]);
       expect(result.defaultProp2).to.equal(state.defaultProp2);
       expect(result.defaultProp3).to.equal(state.defaultProp3);
-      expect(result['defaultArray']).to.equal(state['defaultArray']);
+      expect(result.defaultArray).to.equal(state.defaultArray);
     });
   }); // pushIn
 
@@ -681,7 +680,7 @@ describe('immutableMgr', () => {
       result = immutableMgr.pullAtIn(state, [defaultProp1, nestedProp1], 1);
       expect(result.defaultProp2).to.equal(state.defaultProp2);
       expect(result.defaultProp3).to.equal(state.defaultProp3);
-      expect(result['defaultArray']).to.equal(state['defaultArray']);
+      expect(result.defaultArray).to.equal(state.defaultArray);
     });
   }); // pullAtIn
 
@@ -720,8 +719,8 @@ describe('immutableMgr', () => {
 
     it('Does not mutate other elements - Deep Equal', () => {
       result = immutableMgr.remove(state, defaultProp1);
-      expect(result['defaultProp2']).to.equal(state['defaultProp2']);
-      expect(result['defaultProp3']).to.equal(state['defaultProp3']);
+      expect(result.defaultProp2).to.equal(state.defaultProp2);
+      expect(result.defaultProp3).to.equal(state.defaultProp3);
     });
   }); // remove
 
@@ -762,11 +761,10 @@ describe('immutableMgr', () => {
 
     it('Does not mutate other elements - Deep Equal', () => {
       result = immutableMgr.removeIn(state, [defaultProp1, nestedProp1]);
-      expect(result['defaultProp1']).to.deep.equal({});
-      expect(result['defaultProp2']).to.equal(state['defaultProp2']);
-      expect(result['defaultProp3']).to.equal(state['defaultProp3']);
+      expect(result.defaultProp1).to.deep.equal({});
+      expect(result.defaultProp2).to.equal(state.defaultProp2);
+      expect(result.defaultProp3).to.equal(state.defaultProp3);
     });
-
   }); // removeIn/deleteIn
 
   describe('withMutations', () => {
@@ -789,21 +787,15 @@ describe('immutableMgr', () => {
     });
 
     it('clear', () => {
-      result = immutableMgr.withMutations(emptyState, (mutations => {
-        return mutations
-          .clear();
-
-      }));
+      result = immutableMgr.withMutations(emptyState, ((mutations) => mutations
+        .clear()));
       expect(result).to.equal(emptyState);
       expect(result).to.deep.equal({});
     });
 
     it('remove from an empty source state, returning the original state', () => {
-      result = immutableMgr.withMutations(emptyState, (mutations => {
-        return mutations
-          .deleteIn([defaultProp1, nestedProp1]);
-
-      }));
+      result = immutableMgr.withMutations(emptyState, ((mutations) => mutations
+        .deleteIn([defaultProp1, nestedProp1])));
       expect(result).to.equal(emptyState);
       expect(result).to.deep.equal({});
     });
@@ -825,12 +817,9 @@ describe('immutableMgr', () => {
       };
 
       const id = 'home';
-      result = immutableMgr.withMutations(testState, (mutations => {
-        const result = mutations
-          .deleteIn([id, 'loadingError'])
-          .deleteIn([id, 'loadingFailure']);
-        return result;
-      }));
+      result = immutableMgr.withMutations(testState, ((mutations) => mutations
+        .deleteIn([id, 'loadingError'])
+        .deleteIn([id, 'loadingFailure'])));
       expect(result).to.equal(testState);
     });
   });

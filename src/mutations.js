@@ -12,14 +12,13 @@
 
 
 import reactUpdate from 'immutability-helper';
-import merge from 'onny-utils/merge';
-import cloneDeep from 'onny-utils/cloneDeep';
-import clone from 'onny-utils/clone';
-import pullAt from 'onny-utils/pullAt';
-import forEach from 'onny-utils/forEach';
-import isEmpty from 'onny-utils/isEmpty';
-import isEqual from 'onny-utils/isEqual';
-import { isNull } from 'onny-validate';
+import merge from '@onny/utils/merge';
+import cloneDeep from '@onny/utils/cloneDeep';
+import clone from '@onny/utils/clone';
+import pullAt from '@onny/utils/pullAt';
+import forEach from '@onny/utils/forEach';
+import isEmpty from '@onny/utils/isEmpty';
+import isEqual from '@onny/utils/isEqual';
 import immutableCommands from './immutableCommands';
 
 
@@ -28,9 +27,9 @@ const update = (state, command) => (reactUpdate(state, command));
 export const emptyState = {};
 
 const isType = {
-  null: value => (typeof (value) === 'undefined' || value === null),
+  null: (value) => (typeof (value) === 'undefined' || value === null),
   // string: value => (typeof (value) === 'string'),
-  array: value => (Array.isArray(value))
+  array: (value) => (Array.isArray(value))
   // boolean: (value) => {
   //  if (typeof (value) === 'boolean') { return true; }
   //  if (value === 1 || value === 0) { return true; }
@@ -189,7 +188,7 @@ export default class Mutations {
   }
 
   update(loc, func) {
-    if (isEmpty(this.state) || isNull(this.state)) {
+    if (isEmpty(this.state) || this.state === null) {
       return this;
     }
     this.state = update(this.state, {

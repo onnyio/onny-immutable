@@ -14,7 +14,7 @@
 import Mutations, { emptyState } from './mutations';
 
 
-export const clear = state => emptyState;
+export const clear = () => emptyState;
 /**
  *
  * @param state
