@@ -10,7 +10,9 @@
             "loc",
             "locArray",
             "value",
-            "func"
+            "func",
+            "Mutations",
+            "predicate"
           ]
         }
       }

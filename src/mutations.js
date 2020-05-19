@@ -126,7 +126,7 @@ export default class Mutations {
 
   /**
    * return the state object
-   *
+   * @memberOf Mutations#
    * @return {Object} - the newly created object
    */
   getState() {
@@ -141,6 +141,7 @@ export default class Mutations {
 
   /**
    *
+   * @memberOf Mutations#
    * @param {string[]} locArray - array leading to desired location
    * @return {Mutations}
    */
@@ -160,13 +161,17 @@ export default class Mutations {
     return this;
   }
 
+  /**
+   * @memberOf Mutations#
+   * @return {Mutations}
+   */
   clear() {
     this.state = EMPTY_STATE;
     return this;
   }
 
   /**
-   *
+   * @memberOf Mutations#
    * @param {string[]} locArray - array leading to desired location
    * @param {*} value
    * @return {Mutations}
@@ -180,7 +185,7 @@ export default class Mutations {
   }
 
   /**
-   *
+   * @memberOf Mutations#
    * @param {*} value
    * @return {Mutations}
    */
@@ -194,6 +199,7 @@ export default class Mutations {
 
   /**
    *
+   * @memberOf Mutations#
    * @param {string} loc
    * @param {function} func
    * @return {Mutations}
@@ -210,6 +216,7 @@ export default class Mutations {
 
   /**
    *
+   * @memberOf Mutations#
    * @param {string[]} locArray - array leading to desired location
    * @param {function} func
    * @return {Mutations}
@@ -225,6 +232,7 @@ export default class Mutations {
   /**
    * Merge value into state
    *
+   * @memberOf Mutations#
    * @param {Object|Array} value to be merged
    * @return {Mutations}
    */
@@ -236,6 +244,7 @@ export default class Mutations {
   /**
    * Merge value into state at desired location
    *
+   * @memberOf Mutations#
    * @param {string[]} locArray - array leading to desired location
    * @param {Object|array} value to be merged
    * @return {Mutations}
@@ -251,6 +260,7 @@ export default class Mutations {
   /**
    * push onto the end of an existing array
    *
+   * @memberOf Mutations#
    * @param {String} loc - desired location
    * @param {Array} value - array of values to push
    * @return {Mutations}
@@ -262,6 +272,7 @@ export default class Mutations {
   /**
    * push onto the end of an existing array at a desired location
    *
+   * @memberOf Mutations#
    * @param {string[]} locArray - array leading to desired location
    * @param {Array} value - array of values to push
    * @return {Mutations}
@@ -282,6 +293,7 @@ export default class Mutations {
   /**
    * Adds new items to the beginning of an existing array
    *
+   * @memberOf Mutations#
    * @param {String} loc - desired location
    * @param {Array} value - array of values to add to beginning
    * @return {Mutations}
@@ -293,6 +305,7 @@ export default class Mutations {
   /**
    * Adds new items to the beginning of an existing array at a desired location
    *
+   * @memberOf Mutations#
    * @param {string[]} locArray - array leading to desired location
    * @param {Array} value - array of values to add to beginning
    * @return {Mutations}
@@ -312,6 +325,7 @@ export default class Mutations {
   /**
    * Remove indexes from an array at a desired location
    *
+   * @memberOf Mutations#
    * @param {string[]} locArray - array leading to desired location
    * @param {number|number[]} indexes - indexes to remove
    * @return {Mutations}
@@ -334,6 +348,7 @@ export default class Mutations {
   /**
    * delete an item nested in an object
    *
+   * @memberOf Mutations#
    * @param {string[]} locArray - array leading to desired location
    * @return {Mutations}
    */

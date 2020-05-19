@@ -15,6 +15,7 @@ import Mutations, { EMPTY_STATE } from './mutations';
 
 
 export const clear = () => EMPTY_STATE;
+
 /**
  *
  * @param {Object} state
@@ -57,19 +58,19 @@ export const setIn = (state, locArray, value) => new Mutations(state).setIn(locA
  *
  * @param {object} state - state to update
  * @param {string} loc - desired location (1 deep) in object
- * @param {function} func - the value to set it to
+ * @param {function} predicate - the value to set it to
  * @return {object} - new object with the value in place
  */
-export const update = (state, loc, func) => new Mutations(state).update(loc, func).getState();
+export const update = (state, loc, predicate) => new Mutations(state).update(loc, predicate).getState();
 /**
  * update into a nested object
  *
  * @param {object} state - source state
  * @param {string[]} locArray - array leading to desired location
- * @param {function} func - update callback
+ * @param {function} predicate - update callback
  * @return {Object} updated state
  */
-export const updateIn = (state, locArray, func) => new Mutations(state).updateIn(locArray, func)
+export const updateIn = (state, locArray, predicate) => new Mutations(state).updateIn(locArray, predicate)
   .getState();
 
 /**
@@ -158,7 +159,7 @@ export const pullAtIn = (state, locArray, index) => new Mutations(state).pullAtI
 
 /**
  * callback for the withMutations callback
- * @callback mutationCallback
+ * @callback predicate
  * @param {Mutations} mutationState - Mutations with source state
  * @return Mutations
  */
@@ -167,7 +168,7 @@ export const pullAtIn = (state, locArray, index) => new Mutations(state).pullAtI
  * Make multiple changes at once. Returns a new object
  *
  * @param {object} state - state to change
- * @param {mutationCallback} func - function full of mutations to make. must return {Mutations}
+ * @param {predicate} predicate - function full of mutations to make. must return {Mutations}
  * @return {Object} - new object with all the changes made
  */
-export const withMutations = (state, func) => func(new Mutations(state)).getState();
+export const withMutations = (state, predicate) => predicate(new Mutations(state)).getState();

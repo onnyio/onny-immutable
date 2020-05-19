@@ -77,18 +77,18 @@ module.exports = {
    *
    * @param {object} state - state to update
    * @param {string} loc - desired location (1 deep) in object
-   * @param {function} func - the value to set it to
+   * @param {function} predicate - the value to set it to
    * @return {object} - new object with the value in place
    */
-  update: (state, loc, func) => update(state, loc, func),
+  update: (state, loc, predicate) => update(state, loc, predicate),
   /**
    * update into a nested object
    *
    * @param {object} state - source state
    * @param {string[]} locArray - array leading to desired location
-   * @param {function} func - update callback
+   * @param {function} predicate - update callback
    */
-  updateIn: (state, locArray, func) => updateIn(state, locArray, func),
+  updateIn: (state, locArray, predicate) => updateIn(state, locArray, predicate),
 
   /**
    * delete
@@ -160,8 +160,8 @@ module.exports = {
    * Make multiple changes at once. Returns a new object
    *
    * @param {object} state - state to change
-   * @param {mutationCallback} func - function full of mutations to make. must return {Mutations}
+   * @param {predicate} predicate - function full of mutations to make. must return {Mutations}
    * @return {Object} - new object with all the changes made
    */
-  withMutations: (state, func) => withMutations(state, func)
+  withMutations: (state, predicate) => withMutations(state, predicate)
 };
