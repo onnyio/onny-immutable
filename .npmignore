@@ -6,7 +6,7 @@ test/
 coverage/
 .babelrc
 package-lock.json
-.eslintrc
+.eslint*
 .gitignore
 .travis.yml
 

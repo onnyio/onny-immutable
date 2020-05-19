@@ -117,7 +117,7 @@ const doesLocExist = (state, locArray) => getInCopy(state, locArray) !== null; /
 /**
  * @class Mutations
  */
-export default class Mutations {
+class Mutations {
   constructor(state = {}) {
     // make a copy so we don't mess up the original
     this.state = state;
@@ -371,3 +371,6 @@ export default class Mutations {
     return this;
   }
 }
+
+/** @type Mutations */
+export default Mutations;

@@ -124,9 +124,9 @@ module.exports = {
   /**
    * @param {object} state - source state
    * @param {string[]} locArray - array leading to desired location
-   * @param {Array} value
+   * @param {*[]} valueArray
    */
-  pushIn: (state, locArray, value) => pushIn(state, locArray, value),
+  pushIn: (state, locArray, valueArray) => pushIn(state, locArray, valueArray),
 
   /**
    * @param {Object} state - source state
@@ -154,13 +154,20 @@ module.exports = {
   unshiftIn: (state, locArray, value) => unshiftIn(state, locArray, value),
 
 
-  pullAtIn: (state, locArray, index) => pullAtIn(state, locArray, index),
+  /**
+   *
+   * @param {object} state - source state
+   * @param {string[]} locArray - array leading to desired location
+   * @param {number|number[]} indexes - indexes to remove
+   * @return {Object} updated state
+   */
+  pullAtIn: (state, locArray, indexes) => pullAtIn(state, locArray, indexes),
 
   /**
    * Make multiple changes at once. Returns a new object
    *
    * @param {object} state - state to change
-   * @param {predicate} predicate - function full of mutations to make. must return {Mutations}
+   * @param {mutationsPredicate} predicate - function full of mutations to make. must return {Mutations}
    * @return {Object} - new object with all the changes made
    */
   withMutations: (state, predicate) => withMutations(state, predicate)

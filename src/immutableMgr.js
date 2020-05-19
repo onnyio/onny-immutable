@@ -20,7 +20,7 @@ export const clear = () => EMPTY_STATE;
  *
  * @param {Object} state
  * @param {string} loc - desired location (1 deep) in object
- * @return {*} item at loc within state
+ * @returns {*|null} - desired item from the desired location. null if not found
  */
 export function get(state, loc) { return state[loc] || null; }
 
@@ -28,9 +28,10 @@ export function get(state, loc) { return state[loc] || null; }
  *
  * @param {Object} state
  * @param {string[]} locArray
- * @return {*} item at the locArray location within state
+ * @returns {*|null} - desired item from the desired location. null if not found
  */
-export const getIn = (state, locArray) => new Mutations(state).getIn(locArray).getState();
+export const getIn = (state, locArray) => new Mutations(state)
+  .getIn(locArray).getState();
 
 /**
  * Set
@@ -50,7 +51,8 @@ export const set = (state, value) => new Mutations(state).set(value).getState();
  * @param {*} value - the value to set it to
  * @return {object} - new object with the value in place
  */
-export const setIn = (state, locArray, value) => new Mutations(state).setIn(locArray, value)
+export const setIn = (state, locArray, value) => new Mutations(state)
+  .setIn(locArray, value)
   .getState();
 
 /**
@@ -61,7 +63,8 @@ export const setIn = (state, locArray, value) => new Mutations(state).setIn(locA
  * @param {function} predicate - the value to set it to
  * @return {object} - new object with the value in place
  */
-export const update = (state, loc, predicate) => new Mutations(state).update(loc, predicate).getState();
+export const update = (state, loc, predicate) => new Mutations(state)
+  .update(loc, predicate).getState();
 /**
  * update into a nested object
  *
@@ -70,7 +73,8 @@ export const update = (state, loc, predicate) => new Mutations(state).update(loc
  * @param {function} predicate - update callback
  * @return {Object} updated state
  */
-export const updateIn = (state, locArray, predicate) => new Mutations(state).updateIn(locArray, predicate)
+export const updateIn = (state, locArray, predicate) => new Mutations(state)
+  .updateIn(locArray, predicate)
   .getState();
 
 /**
@@ -80,7 +84,8 @@ export const updateIn = (state, locArray, predicate) => new Mutations(state).upd
  * @param {string} loc - desired location (1 deep) in object
  * @return {object} - new object without the loc
  */
-export const remove = (state, loc) => new Mutations(state).deleteIn([loc]).getState();
+export const remove = (state, loc) => new Mutations(state)
+  .deleteIn([loc]).getState();
 
 /**
  * removeIn
@@ -89,14 +94,16 @@ export const remove = (state, loc) => new Mutations(state).deleteIn([loc]).getSt
  * @param {string[]} locArray - array leading to desired location
  * @return {object} - new object without the loc
  */
-export const removeIn = (state, locArray) => new Mutations(state).deleteIn(locArray).getState();
+export const removeIn = (state, locArray) => new Mutations(state)
+  .deleteIn(locArray).getState();
 
 /**
  * @param {object} state - source state
  * @param {Object|Array} value to be merged
  * @return {Object} updated state
  */
-export const merge = (state, value) => new Mutations(state).merge(value).getState();
+export const merge = (state, value) => new Mutations(state)
+  .merge(value).getState();
 
 /**
  * @param {object} state - source state
@@ -104,16 +111,18 @@ export const merge = (state, value) => new Mutations(state).merge(value).getStat
  * @param {Object|Array} value to be merged
  * @return {Object} updated state
  */
-export const mergeIn = (state, locArray, value) => new Mutations(state).mergeIn(locArray, value)
+export const mergeIn = (state, locArray, value) => new Mutations(state)
+  .mergeIn(locArray, value)
   .getState();
 
 /**
  * @param {object} state - source state
  * @param {string[]} locArray - array leading to desired location
- * @param {Array} value
+ * @param {*[]} valueArray
  * @return {Object} updated state
  */
-export const pushIn = (state, locArray, value) => new Mutations(state).pushIn(locArray, value)
+export const pushIn = (state, locArray, valueArray) => new Mutations(state)
+  .pushIn(locArray, valueArray)
   .getState();
 
 /**
@@ -122,7 +131,8 @@ export const pushIn = (state, locArray, value) => new Mutations(state).pushIn(lo
  * @param {Array} value
  * @return {Object} updated state
  */
-export const push = (state, loc, value) => new Mutations(state).push(loc, value).getState();
+export const push = (state, loc, value) => new Mutations(state)
+  .push(loc, value).getState();
 
 /**
  * Adds new items to the beginning of an existing array
@@ -151,15 +161,16 @@ export const unshiftIn = (state, locArray, value) => new Mutations(state).unshif
  *
  * @param {object} state - source state
  * @param {string[]} locArray - array leading to desired location
- * @param {number} index
+ * @param {number|number[]} indexes - indexes to remove
  * @return {Object} updated state
  */
-export const pullAtIn = (state, locArray, index) => new Mutations(state).pullAtIn(locArray, index)
+export const pullAtIn = (state, locArray, indexes) => new Mutations(state)
+  .pullAtIn(locArray, indexes)
   .getState();
 
 /**
  * callback for the withMutations callback
- * @callback predicate
+ * @callback mutationsPredicate
  * @param {Mutations} mutationState - Mutations with source state
  * @return Mutations
  */
@@ -168,7 +179,7 @@ export const pullAtIn = (state, locArray, index) => new Mutations(state).pullAtI
  * Make multiple changes at once. Returns a new object
  *
  * @param {object} state - state to change
- * @param {predicate} predicate - function full of mutations to make. must return {Mutations}
+ * @param {mutationsPredicate} predicate - function full of mutations to make. must return {Mutations}
  * @return {Object} - new object with all the changes made
  */
 export const withMutations = (state, predicate) => predicate(new Mutations(state)).getState();

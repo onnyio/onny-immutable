@@ -800,6 +800,14 @@ describe('immutableMgr', () => {
       expect(result).to.deep.equal({});
     });
 
+    it('remove from an empty source state, returning the original state', () => {
+      result = immutableMgr.withMutations(
+        EMPTY_STATE,
+        (mutations) => mutations.deleteIn([defaultProp1, nestedProp1]));
+      expect(result).to.equal(EMPTY_STATE);
+      expect(result).to.deep.equal({});
+    });
+
     it("remove nested item that doesn't exist returns state", () => {
       const testState = {
         defaultProp1: {
