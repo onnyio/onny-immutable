@@ -1,7 +1,20 @@
 {
   "presets": [
-    "babel-preset-minify",
-    "@babel/preset-env"
+    "@babel/preset-env",
+    [
+      "minify",
+      {
+        "mangle": {
+          "exclude": [
+            "state",
+            "loc",
+            "locArray",
+            "value",
+            "func"
+          ]
+        }
+      }
+    ]
   ],
   "plugins": [
     "@babel/plugin-syntax-dynamic-import",

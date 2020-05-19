@@ -15,7 +15,7 @@
 import { isEqual, cloneDeep } from '@onny/utils';
 import { expect } from 'chai';
 import immutableMgr from '../src/index';
-import { emptyState } from '../src/mutations';
+import { EMPTY_STATE } from '../src/mutations';
 
 
 const nestedProp1 = 'nestedProp1';
@@ -317,8 +317,8 @@ describe('immutableMgr', () => {
       };
     });
     it('Has empty source state', () => {
-      result = immutableMgr.updateIn(emptyState, [defaultProp1, nestedProp1], updateFunc);
-      expect(result).to.deep.equal(emptyState);
+      result = immutableMgr.updateIn(EMPTY_STATE, [defaultProp1, nestedProp1], updateFunc);
+      expect(result).to.deep.equal(EMPTY_STATE);
     });
 
     it('Does not mutate original state', () => {
@@ -656,8 +656,8 @@ describe('immutableMgr', () => {
       state = cloneDeep(origState);
     });
     it('pull from an empty source state, returning the original state', () => {
-      result = immutableMgr.pullAtIn(emptyState, [defaultProp1, nestedProp1], 1);
-      expect(result).to.equal(emptyState);
+      result = immutableMgr.pullAtIn(EMPTY_STATE, [defaultProp1, nestedProp1], 1);
+      expect(result).to.equal(EMPTY_STATE);
     });
 
     it('Does not mutate original state - Deep Equal', () => {
@@ -700,8 +700,8 @@ describe('immutableMgr', () => {
       state = cloneDeep(origState);
     });
     it('remove from an empty source state, returning the original state', () => {
-      result = immutableMgr.remove(emptyState, defaultProp1);
-      expect(result).to.equal(emptyState);
+      result = immutableMgr.remove(EMPTY_STATE, defaultProp1);
+      expect(result).to.equal(EMPTY_STATE);
     });
 
     it('Does not mutate original state', () => {
@@ -740,8 +740,8 @@ describe('immutableMgr', () => {
       state = cloneDeep(origState);
     });
     it('remove from an empty source state, returning the original state', () => {
-      result = immutableMgr.removeIn(emptyState, [defaultProp1, nestedProp1]);
-      expect(result).to.equal(emptyState);
+      result = immutableMgr.removeIn(EMPTY_STATE, [defaultProp1, nestedProp1]);
+      expect(result).to.equal(EMPTY_STATE);
       expect(result).to.deep.equal({});
     });
 
@@ -787,16 +787,16 @@ describe('immutableMgr', () => {
     });
 
     it('clear', () => {
-      result = immutableMgr.withMutations(emptyState, ((mutations) => mutations
+      result = immutableMgr.withMutations(EMPTY_STATE, ((mutations) => mutations
         .clear()));
-      expect(result).to.equal(emptyState);
+      expect(result).to.equal(EMPTY_STATE);
       expect(result).to.deep.equal({});
     });
 
     it('remove from an empty source state, returning the original state', () => {
-      result = immutableMgr.withMutations(emptyState, ((mutations) => mutations
+      result = immutableMgr.withMutations(EMPTY_STATE, ((mutations) => mutations
         .deleteIn([defaultProp1, nestedProp1])));
-      expect(result).to.equal(emptyState);
+      expect(result).to.equal(EMPTY_STATE);
       expect(result).to.deep.equal({});
     });
 

@@ -24,7 +24,7 @@ import immutableCommands from './immutableCommands';
 
 const update = (state, command) => (reactUpdate(state, command));
 
-export const emptyState = {};
+export const EMPTY_STATE = {};
 
 const isType = {
   null: (value) => (typeof (value) === 'undefined' || value === null),
@@ -161,14 +161,14 @@ export default class Mutations {
   }
 
   clear() {
-    this.state = emptyState;
+    this.state = EMPTY_STATE;
     return this;
   }
 
   /**
    *
    * @param {string[]} locArray - array leading to desired location
-   * @param value
+   * @param {*} value
    * @return {Mutations}
    */
   setIn(locArray, value) {
@@ -179,6 +179,11 @@ export default class Mutations {
     return this;
   }
 
+  /**
+   *
+   * @param {*} value
+   * @return {Mutations}
+   */
   set(value) {
     if (isEqual(this.state, value)) {
       return this;
@@ -187,6 +192,12 @@ export default class Mutations {
     return this;
   }
 
+  /**
+   *
+   * @param {string} loc
+   * @param {function} func
+   * @return {Mutations}
+   */
   update(loc, func) {
     if (isEmpty(this.state) || this.state === null) {
       return this;
@@ -200,7 +211,7 @@ export default class Mutations {
   /**
    *
    * @param {string[]} locArray - array leading to desired location
-   * @param func
+   * @param {function} func
    * @return {Mutations}
    */
   updateIn(locArray, func) {
@@ -214,7 +225,7 @@ export default class Mutations {
   /**
    * Merge value into state
    *
-   * @param {Object|array} value to be merged
+   * @param {Object|Array} value to be merged
    * @return {Mutations}
    */
   merge(value) {
