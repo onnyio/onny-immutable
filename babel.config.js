@@ -5,13 +5,7 @@ module.exports = function babelConfig(api) {
     [
       'minify',
       {
-        // simplify was causing problems with exporting jsdocs properly
-        // perhaps typescript would fix this?
-        'simplify': false,
         mangle: {
-          topLevel: false,
-          keepClassName: true,
-          keepFnName: true,
           exclude: [
             'srcState',
             'loc',
@@ -26,7 +20,6 @@ module.exports = function babelConfig(api) {
             'funcWithMutations',
             'mutationState'
           ],
-          eval: true
         }
       }
     ]

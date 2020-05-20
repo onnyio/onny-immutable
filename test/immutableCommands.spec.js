@@ -13,8 +13,8 @@
 /* eslint-disable import/no-extraneous-dependencies */
 
 import { expect } from 'chai';
-// import immutableCommands from '../dist/immutableCommands';
-import immutableCommands from '../src/immutableCommands';
+import immutableCommands from '../dist/immutableCommands';
+// import immutableCommands from '../src/immutableCommands';
 
 
 let result;

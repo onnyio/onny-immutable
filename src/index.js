@@ -10,6 +10,7 @@
  * Last Modified: 2020.5.19
  */
 
+/* eslint-disable import/prefer-default-export */
 
 import Mutations, { EMPTY_STATE } from './mutations';
 
@@ -30,36 +31,36 @@ export const immutableMgr = {
   clear: () => EMPTY_STATE,
 
   /**
-   * @param {object} srcState
+   * @param {Object} srcState
    * @param {string} loc - desired location (1 deep) in object
    * @returns {*|null} - desired item from the desired location. null if not found
    */
-  get: (srcState, loc) => { return srcState[loc] || null; },
+  get: (srcState, loc) => srcState[loc] || null,
 
   /**
-   * @param {object} srcState - The state to check
+   * @param {Object} srcState - The state to check
    * @param {string[]} locArray - array to the desired location inside object
    * @returns {*|null} - desired item from the desired location. null if not found
    */
-  getIn(srcState, locArray){
+  getIn(srcState, locArray) {
     return new Mutations(srcState).getIn(locArray)
-      .getState()
+      .getState();
   },
 
   /**
    * Set
    *
-   * @param {object} srcState - state to update
+   * @param {Object} srcState - state to update
    * @param {*} value - the value to set it to
-   * @return {object} - new object with the value in place
+   * @return {Object} - new object with the value in place
    */
   set: (srcState, value) => new Mutations(srcState).set(value)
     .getState(),
   /**
-   * @param {object} srcState - state to update
+   * @param {Object} srcState - state to update
    * @param {string[]} locArray - an array of object properties, updating the last property
    * @param {*} value - the value to set it to
-   * @return {object} - new object with the value in place
+   * @return {Object} - new object with the value in place
    */
   setIn: (srcState, locArray, value) => new Mutations(srcState)
     .setIn(locArray, value)
@@ -68,10 +69,10 @@ export const immutableMgr = {
   /**
    * Update part of the state object
    *
-   * @param {object} srcState - state to update
+   * @param {Object} srcState - state to update
    * @param {string} loc - desired location (1 deep) in object
    * @param {callback} fn - the value to set it to
-   * @return {object} - new object with the value in place
+   * @return {Object} - new object with the value in place
    */
   update: (srcState, loc, fn) => new Mutations(srcState)
     .update(loc, fn)
@@ -80,10 +81,10 @@ export const immutableMgr = {
   /**
    * update into a nested object
    *
-   * @param {object} srcState - source state
+   * @param {Object} srcState - source state
    * @param {string[]} locArray - array leading to desired location
    * @param {callback} fn - update callback
-   * @return {object} updated state
+   * @return {Object} updated state
    */
   updateIn: (srcState, locArray, fn) => new Mutations(srcState)
     .updateIn(locArray, fn)
@@ -92,9 +93,9 @@ export const immutableMgr = {
   /**
    * delete
    *
-   * @param {object} srcState - source state
+   * @param {Object} srcState - source state
    * @param {string} loc - desired location (1 deep) in object
-   * @return {object} - new object without the loc
+   * @return {Object} - new object without the loc
    */
   remove: (srcState, loc) => new Mutations(srcState)
     .deleteIn([loc])
@@ -103,45 +104,45 @@ export const immutableMgr = {
   /**
    * delete
    *
-   * @param {object} srcState - source state
+   * @param {Object} srcState - source state
    * @param {string[]} locArray - array leading to desired location
-   * @return {object} - new object without the loc
+   * @return {Object} - new object without the loc
    */
   removeIn: (srcState, locArray) => new Mutations(srcState)
     .deleteIn(locArray)
     .getState(),
 
   /**
-   * @param {object} srcState - source state
-   * @param {object|Array} value to be merged
-   * @return {object} updated state
+   * @param {Object} srcState - source state
+   * @param {Object|Array} value to be merged
+   * @return {Object} updated state
    */
   merge: (srcState, value) => new Mutations(srcState)
     .merge(value)
     .getState(),
 
   /**
-   * @param {object} srcState - source state
+   * @param {Object} srcState - source state
    * @param {string[]} locArray - array leading to desired location
-   * @param {object|Array} value to be merged
-   * @return {object} updated state
+   * @param {Object|Array} value to be merged
+   * @return {Object} updated state
    */
   mergeIn: (srcState, locArray, value) => new Mutations(srcState)
     .mergeIn(locArray, value)
     .getState(),
 
   /**
-   * @param {object} srcState - source state
+   * @param {Object} srcState - source state
    * @param {string[]} locArray - array leading to desired location
    * @param {*[]} values
-   * @return {object} updated state
+   * @return {Object} updated state
    */
   pushIn: (srcState, locArray, values) => new Mutations(srcState)
     .pushIn(locArray, values)
     .getState(),
 
   /**
-   * @param {object} srcState - source state
+   * @param {Object} srcState - source state
    * @param {string} loc - desired location (1 deep) in object
    * @param {Array} value
    */
@@ -152,10 +153,10 @@ export const immutableMgr = {
   /**
    * Adds new items to the beginning of an existing array
    *
-   * @param {object} srcState - source state
+   * @param {Object} srcState - source state
    * @param {string} loc - desired location (1 deep) in object
    * @param {*[]} value
-   * @return {object} updated state
+   * @return {Object} updated state
    */
   unshift: (srcState, loc, value) => new Mutations(srcState).unshift(loc, value)
     .getState(),
@@ -163,20 +164,20 @@ export const immutableMgr = {
   /**
    * Adds new items to the beginning of an existing array at a desired location
    *
-   * @param {object} srcState - source state
+   * @param {Object} srcState - source state
    * @param {string[]} locArray - array leading to desired location
    * @param {*[]} value
-   * @return {object} updated state
+   * @return {Object} updated state
    */
   unshiftIn: (srcState, locArray, value) => new Mutations(srcState).unshiftIn(locArray, value)
     .getState(),
 
   /**
    *
-   * @param {object} srcState - source state
+   * @param {Object} srcState - source state
    * @param {string[]} locArray - array leading to desired location
    * @param {number|number[]} indices  - indexes to remove
-   * @return {object} updated state
+   * @return {Object} updated state
    */
   pullAtIn: (srcState, locArray, indices) => new Mutations(srcState)
     .pullAtIn(locArray, indices)
@@ -185,13 +186,15 @@ export const immutableMgr = {
   /**
    * Make multiple changes at once. Returns a new object
    *
-   * @param {object} srcState - source state
+   * @param {Object} srcState - source state
    * @param {funcWithMutations} fn - function full of mutations to make. must return {Mutations}
-   * @return {object} - new object with all the changes made
+   * @return {Object} - new object with all the changes made
    */
-  withMutations(srcState, fn){
+  withMutations(srcState, fn) {
     /** @type Mutations */
-    const mutations = new Mutations(srcState)
-    return fn(mutations).getState()
+    const mutations = new Mutations(srcState);
+    return fn(mutations).getState();
   }
 };
+
+// export default immutableMgr

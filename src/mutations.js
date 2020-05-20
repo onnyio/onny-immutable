@@ -24,11 +24,17 @@ import immutableCommands from './immutableCommands';
 
 const update = (state, command) => (reactUpdate(state, command));
 
+/**
+ *
+ * @type {{}}
+ */
 export const EMPTY_STATE = {};
+
+
 
 /**
  * validators
- * @type {object<function(*): boolean>}
+ * @type {Object<function(*): boolean>}
  */
 const isType = {
   null: (value) => (typeof (value) === 'undefined' || value === null),
@@ -39,7 +45,7 @@ const isType = {
  *
  * @param {string[]} locArray
  * @param {function} command
- * @return {object}
+ * @return {Object}
  */
 const useCommandIn = (locArray, command) => {
   let objPointer = {};
@@ -61,7 +67,7 @@ const useCommandIn = (locArray, command) => {
 
 /**
  *
- * @param {object} state
+ * @param {Object} state
  * @param {string[]} locArray
  * @return {null|*}
  */
@@ -85,12 +91,12 @@ const getInCopy = (state, locArray) => {
  *
  * @example merge({}, {topic: 'bar'}) //will fail because topic does not exist in the first param
  *
- * @param {object} state
+ * @param {Object} state
  * @param {String[]} locArray
  * @param {boolean} makeLastItemArray
  * @return {*} ensures there is something at every step of locArray, placing {} if not
  */
-const addObjPlaceholder = (state={}, locArray, makeLastItemArray = false) => {
+const addObjPlaceholder = (state = {}, locArray, makeLastItemArray = false) => {
   let objPointer = state;
   // assign us to the newly created pointer
   const fullObj = objPointer;
@@ -116,7 +122,7 @@ const addObjPlaceholder = (state={}, locArray, makeLastItemArray = false) => {
 
 /**
  *
- * @param {object} state
+ * @param {Object} state
  * @param {string[]} locArray
  * @return {boolean}
  */
@@ -129,26 +135,28 @@ const doesLocExist = (state, locArray) => getInCopy(state, locArray) !== null; /
 
 /**
  * @class Mutations
+ * @property {object} state
+ * @property {object} originalState
  */
 class Mutations {
   /**
    * @memberOf Mutations#
    * @this Mutations
-   * @param {object} srcState
-   *
+   * @param {Object} srcState
    */
   constructor(srcState) {
     // make a copy so we don't mess up the original
-    /** @type object*/
+    /** @type Object*/
     this.state = srcState;
-    /** @type object*/
+    /** @type Object*/
     this.originalState = cloneDeep(this.state);
   }
 
   /**
    * return the state object
+   * @function getState
    * @memberOf Mutations#
-   * @return {object} - the newly created object
+   * @return {Object} - the newly created object
    */
   getState() {
     // if the state hasn't change, return the original state to preserve shallow compares
@@ -162,6 +170,7 @@ class Mutations {
 
   /**
    *
+   * @function getIn
    * @memberOf Mutations#
    * @param {string[]} locArray - array leading to desired location
    * @return {Mutations}
@@ -183,6 +192,7 @@ class Mutations {
   }
 
   /**
+   * @function clear
    * @memberOf Mutations#
    * @return {Mutations}
    */
@@ -193,6 +203,7 @@ class Mutations {
 
 
   /**
+   * @function set
    * @memberOf Mutations#
    * @param {*} value
    * @return {Mutations}
@@ -207,6 +218,7 @@ class Mutations {
 
   /**
    *
+   * @function setIn
    * @memberOf Mutations#
    * @this Mutations
    * @param {string[]} locArray - array leading to desired location
@@ -219,10 +231,24 @@ class Mutations {
     this.state = update(placeholder, useCommandIn(locArray, immutableCommands.set(value)));
 
     return this;
-  };
+  }
+  /**
+   * @memberOf Mutations#
+   * @this Mutations
+   * @param {string[]} locArray - array leading to desired location
+   * @param {*} value - value to set
+   * @return {Mutations}
+   */
+  setInBleh(locArray, value) {
+    if (!locArray || isEmpty(locArray)) { return this; }
+    const placeholder = addObjPlaceholder(this.state, locArray);
+    this.state = update(placeholder, useCommandIn(locArray, immutableCommands.set(value)));
+
+    return this;
+  }
 
   /**
-   *
+   * @function update
    * @memberOf Mutations#
    * @param {string} loc
    * @param {callback} func
@@ -240,6 +266,7 @@ class Mutations {
 
   /**
    *
+   * @function updateIn
    * @memberOf Mutations#
    * @param {string[]} locArray - array leading to desired location
    * @param {callback} func
@@ -256,8 +283,9 @@ class Mutations {
   /**
    * Merge value into state
    *
+   * @function merge
    * @memberOf Mutations#
-   * @param {object|Array} value to be merged
+   * @param {Object|Array} value to be merged
    * @return {Mutations}
    */
   merge(value) {
@@ -268,9 +296,10 @@ class Mutations {
   /**
    * Merge value into state at desired location
    *
+   * @function mergeIn
    * @memberOf Mutations#
    * @param {string[]} locArray - array leading to desired location
-   * @param {object|array} value to be merged
+   * @param {Object|array} value to be merged
    * @return {Mutations}
    */
   mergeIn(locArray, value) {
@@ -285,6 +314,7 @@ class Mutations {
   /**
    * push onto the end of an existing array
    *
+   * @function push
    * @memberOf Mutations#
    * @param {String} loc - desired location
    * @param {Array} value - array of values to push
@@ -297,6 +327,7 @@ class Mutations {
   /**
    * push onto the end of an existing array at a desired location
    *
+   * @function pushIn
    * @memberOf Mutations#
    * @param {string[]} locArray - array leading to desired location
    * @param {Array} value - array of values to push
@@ -318,6 +349,7 @@ class Mutations {
   /**
    * Adds new items to the beginning of an existing array
    *
+   * @function unshift
    * @memberOf Mutations#
    * @param {String} loc - desired location
    * @param {Array} value - array of values to add to beginning
@@ -330,6 +362,7 @@ class Mutations {
   /**
    * Adds new items to the beginning of an existing array at a desired location
    *
+   * @function unshiftIn
    * @memberOf Mutations#
    * @param {string[]} locArray - array leading to desired location
    * @param {Array} value - array of values to add to beginning
@@ -350,6 +383,7 @@ class Mutations {
   /**
    * Remove indexes from an array at a desired location
    *
+   * @function pullAtIn
    * @memberOf Mutations#
    * @param {string[]} locArray - array leading to desired location
    * @param {number|number[]} indices  - indexes to remove
@@ -373,6 +407,7 @@ class Mutations {
   /**
    * delete an item nested in an object
    *
+   * @function deleteIn
    * @memberOf Mutations#
    * @this Mutations
    * @param {string[]} locArray - array leading to desired location
