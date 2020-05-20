@@ -26,20 +26,21 @@ const update = (state, command) => (reactUpdate(state, command));
 
 export const EMPTY_STATE = {};
 
+/**
+ * validators
+ * @type {object<function(*): boolean>}
+ */
 const isType = {
   null: (value) => (typeof (value) === 'undefined' || value === null),
-  // string: value => (typeof (value) === 'string'),
   array: (value) => (Array.isArray(value))
-  // boolean: (value) => {
-  //  if (typeof (value) === 'boolean') { return true; }
-  //  if (value === 1 || value === 0) { return true; }
-  //  if (isType.string(value)) {
-  //    return validator.isBoolean(value);
-  //  }
-  //  return false;
-  // }
 };
 
+/**
+ *
+ * @param {string[]} locArray
+ * @param {function} command
+ * @return {object}
+ */
 const useCommandIn = (locArray, command) => {
   let objPointer = {};
   const fullObj = objPointer;
@@ -58,6 +59,12 @@ const useCommandIn = (locArray, command) => {
 };
 
 
+/**
+ *
+ * @param {object} state
+ * @param {string[]} locArray
+ * @return {null|*}
+ */
 const getInCopy = (state, locArray) => {
   let result = cloneDeep(state);
   forEach(locArray, (loc) => {
@@ -83,7 +90,7 @@ const getInCopy = (state, locArray) => {
  * @param {boolean} makeLastItemArray
  * @return {*} ensures there is something at every step of locArray, placing {} if not
  */
-const addObjPlaceholder = (state, locArray, makeLastItemArray = false) => {
+const addObjPlaceholder = (state={}, locArray, makeLastItemArray = false) => {
   let objPointer = state;
   // assign us to the newly created pointer
   const fullObj = objPointer;
@@ -107,6 +114,12 @@ const addObjPlaceholder = (state, locArray, makeLastItemArray = false) => {
   return fullObj;
 };
 
+/**
+ *
+ * @param {object} state
+ * @param {string[]} locArray
+ * @return {boolean}
+ */
 const doesLocExist = (state, locArray) => getInCopy(state, locArray) !== null; // turn into boolean
 
 
@@ -118,16 +131,24 @@ const doesLocExist = (state, locArray) => getInCopy(state, locArray) !== null; /
  * @class Mutations
  */
 class Mutations {
-  constructor(state = {}) {
+  /**
+   * @memberOf Mutations#
+   * @this Mutations
+   * @param {object} srcState
+   *
+   */
+  constructor(srcState) {
     // make a copy so we don't mess up the original
-    this.state = state;
+    /** @type object*/
+    this.state = srcState;
+    /** @type object*/
     this.originalState = cloneDeep(this.state);
   }
 
   /**
    * return the state object
    * @memberOf Mutations#
-   * @return {Object} - the newly created object
+   * @return {object} - the newly created object
    */
   getState() {
     // if the state hasn't change, return the original state to preserve shallow compares
@@ -170,19 +191,6 @@ class Mutations {
     return this;
   }
 
-  /**
-   * @memberOf Mutations#
-   * @param {string[]} locArray - array leading to desired location
-   * @param {*} value
-   * @return {Mutations}
-   */
-  setIn(locArray, value) {
-    if (!locArray || isEmpty(locArray)) { return this; }
-    const placeholder = addObjPlaceholder(this.state, locArray);
-    this.state = update(placeholder, useCommandIn(locArray, immutableCommands.set(value)));
-
-    return this;
-  }
 
   /**
    * @memberOf Mutations#
@@ -200,8 +208,24 @@ class Mutations {
   /**
    *
    * @memberOf Mutations#
+   * @this Mutations
+   * @param {string[]} locArray - array leading to desired location
+   * @param {*} value - value to set
+   * @return {Mutations}
+   */
+  setIn(locArray, value) {
+    if (!locArray || isEmpty(locArray)) { return this; }
+    const placeholder = addObjPlaceholder(this.state, locArray);
+    this.state = update(placeholder, useCommandIn(locArray, immutableCommands.set(value)));
+
+    return this;
+  };
+
+  /**
+   *
+   * @memberOf Mutations#
    * @param {string} loc
-   * @param {function} func
+   * @param {callback} func
    * @return {Mutations}
    */
   update(loc, func) {
@@ -218,7 +242,7 @@ class Mutations {
    *
    * @memberOf Mutations#
    * @param {string[]} locArray - array leading to desired location
-   * @param {function} func
+   * @param {callback} func
    * @return {Mutations}
    */
   updateIn(locArray, func) {
@@ -233,7 +257,7 @@ class Mutations {
    * Merge value into state
    *
    * @memberOf Mutations#
-   * @param {Object|Array} value to be merged
+   * @param {object|Array} value to be merged
    * @return {Mutations}
    */
   merge(value) {
@@ -246,12 +270,13 @@ class Mutations {
    *
    * @memberOf Mutations#
    * @param {string[]} locArray - array leading to desired location
-   * @param {Object|array} value to be merged
+   * @param {object|array} value to be merged
    * @return {Mutations}
    */
   mergeIn(locArray, value) {
     const placeholder = addObjPlaceholder(this.state, locArray);
     const merged = useCommandIn(locArray, immutableCommands.merge(value));
+
     this.state = update(placeholder, merged);
     return this;
   }
@@ -327,19 +352,19 @@ class Mutations {
    *
    * @memberOf Mutations#
    * @param {string[]} locArray - array leading to desired location
-   * @param {number|number[]} indexes - indexes to remove
+   * @param {number|number[]} indices  - indexes to remove
    * @return {Mutations}
    */
-  pullAtIn(locArray, indexes) {
+  pullAtIn(locArray, indices) {
     const placeholder = getInCopy(this.state, locArray);
     if (!isType.array(placeholder)) {
       return this;
     }
     // make sure the index is valid
-    if (placeholder.length <= indexes) {
+    if (placeholder.length <= indices) {
       return this;
     }
-    pullAt(placeholder, indexes);
+    pullAt(placeholder, indices);
     this.setIn(locArray, placeholder);
     return this;
   }
@@ -349,6 +374,7 @@ class Mutations {
    * delete an item nested in an object
    *
    * @memberOf Mutations#
+   * @this Mutations
    * @param {string[]} locArray - array leading to desired location
    * @return {Mutations}
    */
@@ -372,5 +398,4 @@ class Mutations {
   }
 }
 
-/** @type Mutations */
 export default Mutations;

@@ -1,6 +1,6 @@
 {
   "name": "@onny/immutable",
-  "version": "0.0.5",
+  "version": "0.1.0-0",
   "description": "Onny utils for immutability",
   "main": "./dist/index.js",
   "scripts": {
@@ -9,8 +9,10 @@
     "lint": "eslint ./src --ext .js --format ./node_modules/eslint-config-onny/eslintFormat",
     "lint-fix": "eslint ./src --ext .js --format ./node_modules/eslint-config-onny/eslintFormat --fix",
     "lint-fix_test": "eslint ./test --ext .js --format ./node_modules/eslint-config-onny/eslintFormat --fix",
-    "test_local": "mocha --require @babel/register",
-    "test": "nyc --require @babel/register mocha && nyc report --reporter=text-lcov | coveralls"
+    "test_no_build": "mocha --require @babel/register",
+    "test_local": "npm run build&&mocha --require @babel/register",
+    "test": "nyc --require @babel/register mocha && nyc report --reporter=text-lcov | coveralls",
+    "coverage":  "nyc --require @babel/register mocha && nyc report --reporter=html"
   },
   "repository": {
     "type": "git",
