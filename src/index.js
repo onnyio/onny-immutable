@@ -1,5 +1,5 @@
 /**
- * @Copyright (C) 2015-2018 Onny LLC - All Rights Reserved
+ * @Copyright (C) 2015-2020 Onny LLC - All Rights Reserved
  *
  * This file is part of onny-immutable and is the sole property of its owner.
  * Unauthorized use of this file, via any medium or form, whole or in part,
@@ -7,7 +7,7 @@
  *
  * This file is proprietary and confidential
  *
- * Last Modified: 2018.3.10
+ * Last Modified: 2020.5.19
  */
 
 
@@ -31,6 +31,12 @@ import {
   withMutations
 } from './immutableMgr';
 
+/**
+ * callback for the withMutations callback
+ * @callback mutationsPredicate
+ * @param {Mutations} mutationState - Mutations with source state
+ * @return Mutations
+ */
 
 module.exports = {
 
